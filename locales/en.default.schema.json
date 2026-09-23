@@ -3405,6 +3405,288 @@
           "label": "Open by default"
         }
       }
+    },
+    "aura_arc_hero": {
+      "name": "Aura & Arc Hero",
+      "presets": {
+        "name": "Aura & Arc Hero"
+      },
+      "settings": {
+        "image": {
+          "label": "Desktop background image"
+        },
+        "image_mobile": {
+          "label": "Mobile background image (optional)"
+        },
+        "image_opacity": {
+          "label": "Image opacity"
+        },
+        "image_blend_mode": {
+          "label": "Image blend mode",
+          "options__1": {
+            "label": "Luminosity (Moody Luxury)"
+          },
+          "options__2": {
+            "label": "Normal"
+          },
+          "options__3": {
+            "label": "Multiply"
+          },
+          "options__4": {
+            "label": "Overlay"
+          },
+          "options__5": {
+            "label": "Darken"
+          }
+        },
+        "overlay_opacity": {
+          "label": "Gradient overlay opacity"
+        },
+        "accent_color": {
+          "label": "Accent / highlight color"
+        },
+        "desktop_height": {
+          "label": "Desktop section height",
+          "options__1": {
+            "label": "Small (500px)"
+          },
+          "options__2": {
+            "label": "Medium (650px)"
+          },
+          "options__3": {
+            "label": "Large (85vh)"
+          },
+          "options__4": {
+            "label": "Full Screen (100vh)"
+          }
+        },
+        "content_alignment": {
+          "label": "Content alignment",
+          "options__1": {
+            "label": "Left"
+          },
+          "options__2": {
+            "label": "Center"
+          },
+          "options__3": {
+            "label": "Right"
+          }
+        },
+        "content_max_width": {
+          "label": "Content maximum width"
+        },
+        "padding_top": {
+          "label": "Top padding (px)"
+        },
+        "padding_bottom": {
+          "label": "Bottom padding (px)"
+        },
+        "overlap_header": {
+          "label": "Overlap transparent header (negative top margin)"
+        }
+      },
+      "blocks": {
+        "subheading": {
+          "name": "Subheading",
+          "settings": {
+            "subheading": {
+              "label": "Text"
+            },
+            "subheading_size": {
+              "label": "Subheading font size (px)"
+            },
+            "subheading_color": {
+              "label": "Subheading text color"
+            }
+          }
+        },
+        "heading": {
+          "name": "Heading",
+          "settings": {
+            "heading": {
+              "label": "Heading text"
+            },
+            "heading_size": {
+              "label": "Heading size preset",
+              "options__1": {
+                "label": "Small"
+              },
+              "options__2": {
+                "label": "Medium"
+              },
+              "options__3": {
+                "label": "Large"
+              },
+              "options__4": {
+                "label": "Extra large"
+              }
+            },
+            "heading_custom_size": {
+              "label": "Custom font size (0 for preset)"
+            },
+            "heading_color": {
+              "label": "Heading text color"
+            }
+          }
+        },
+        "text": {
+          "name": "Description text",
+          "settings": {
+            "text": {
+              "label": "Description"
+            },
+            "text_size": {
+              "label": "Description font size (px)"
+            },
+            "text_max_width": {
+              "label": "Description maximum width (px)"
+            },
+            "text_color": {
+              "label": "Description text color"
+            }
+          }
+        },
+        "buttons": {
+          "name": "Action buttons",
+          "settings": {
+            "button_label_1": {
+              "label": "Primary button label"
+            },
+            "button_link_1": {
+              "label": "Primary button link"
+            },
+            "button_style_1": {
+              "label": "Primary button style"
+            },
+            "button_label_2": {
+              "label": "Secondary button label"
+            },
+            "button_link_2": {
+              "label": "Secondary button link"
+            },
+            "button_style_2": {
+              "label": "Secondary button style"
+            },
+            "button_style": {
+              "options__1": {
+                "label": "Primary Gold Glow"
+              },
+              "options__2": {
+                "label": "Secondary Glassmorphism"
+              },
+              "options__3": {
+                "label": "Outline Minimal"
+              }
+            },
+            "button_1_bg_color": {
+              "label": "Primary button background"
+            },
+            "button_1_text_color": {
+              "label": "Primary button text color"
+            },
+            "button_2_bg_color": {
+              "label": "Secondary button background"
+            },
+            "button_2_text_color": {
+              "label": "Secondary button text color"
+            },
+            "button_2_border_color": {
+              "label": "Secondary button border color"
+            },
+            "button_shape": {
+              "label": "Button shape",
+              "options__1": {
+                "label": "Pill (Rounded Caps)"
+              },
+              "options__2": {
+                "label": "Slightly Rounded"
+              },
+              "options__3": {
+                "label": "Sharp Square"
+              }
+            },
+            "button_size": {
+              "label": "Button size",
+              "options__1": {
+                "label": "Small"
+              },
+              "options__2": {
+                "label": "Medium"
+              },
+              "options__3": {
+                "label": "Large"
+              },
+              "options__4": {
+                "label": "Extra large"
+              }
+            }
+          }
+        },
+        "spacer": {
+          "name": "Vertical spacer",
+          "settings": {
+            "spacer_height": {
+              "label": "Spacer height (px)"
+            }
+          }
+        }
+      }
+    },
+    "aura_arc_header": {
+      "name": "Aura & Arc Header",
+      "presets": {
+        "name": "Aura & Arc Header"
+      },
+      "settings": {
+        "show_announcement": {
+          "label": "Show announcement bar"
+        },
+        "announcement_text": {
+          "label": "Announcement bar text"
+        },
+        "announcement_link": {
+          "label": "Announcement bar link"
+        },
+        "announcement_bg": {
+          "label": "Announcement bar background"
+        },
+        "announcement_color": {
+          "label": "Announcement bar text color"
+        },
+        "position_mode": {
+          "label": "Header position mode",
+          "options__1": {
+            "label": "Sticky on Scroll"
+          },
+          "options__2": {
+            "label": "Fixed Glassmorphism Underlap"
+          },
+          "options__3": {
+            "label": "Static Standard"
+          }
+        },
+        "logo": {
+          "label": "Custom brand logo image"
+        },
+        "logo_width": {
+          "label": "Logo maximum width (px)"
+        },
+        "brand_title": {
+          "label": "Brand title text"
+        },
+        "show_title": {
+          "label": "Show brand title text"
+        },
+        "menu": {
+          "label": "Navigation menu"
+        },
+        "accent_color": {
+          "label": "Accent color"
+        },
+        "header_height": {
+          "label": "Header bar height (px)"
+        }
+      }
     }
   }
 }

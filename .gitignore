@@ -1,0 +1,13 @@
+# Antigravity AI agent customizations (local only — not for version control)
+GEMINI.md
+.agents/
+
+# Shopify CLI
+.shopify/
+
+# Node
+node_modules/
+
+# Documentation / reference files
+docs/
+

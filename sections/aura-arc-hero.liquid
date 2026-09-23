@@ -1,0 +1,621 @@
+{{ 'aura-arc-hero.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .aura-arc-hero {
+    --hero-min-height: {{ section.settings.desktop_height }};
+    --hero-padding-top: {{ section.settings.padding_top }}px;
+    --hero-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --hero-img-opacity: {{ section.settings.image_opacity | divided_by: 100.0 }};
+    --hero-img-blend-mode: {{ section.settings.image_blend_mode }};
+    --hero-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --hero-content-max-width: {{ section.settings.content_max_width }}px;
+    {%- if section.settings.accent_color != blank -%}
+      --aura-arc-accent: {{ section.settings.accent_color }};
+    {%- endif -%}
+  }
+{%- endstyle -%}
+
+<div class="aura-arc-hero color-{{ section.settings.color_scheme }} gradient{% if section.settings.overlap_header %} aura-arc-hero--overlap-header{% endif %}">
+  <!-- Background Media & Image Layer -->
+  <div class="aura-arc-hero__bg-container">
+    {%- if section.settings.image != blank -%}
+      {%- assign mobile_class = '' -%}
+      {%- if section.settings.image_mobile != blank -%}
+        {%- assign mobile_class = ' has-mobile-bg' -%}
+        {{
+          section.settings.image_mobile
+          | image_url: width: 1500
+          | image_tag:
+            loading: 'eager',
+            class: 'aura-arc-hero__bg aura-arc-hero__bg--mobile',
+            widths: '375, 550, 750',
+            alt: section.settings.image_mobile.alt
+            | escape
+        }}
+      {%- endif -%}
+      {{
+        section.settings.image
+        | image_url: width: 3840
+        | image_tag:
+          loading: 'eager',
+          class: 'aura-arc-hero__bg aura-arc-hero__bg--desktop' | append: mobile_class,
+          widths: '750, 1100, 1500, 1780, 2000, 3000, 3840',
+          alt: section.settings.image.alt
+          | escape
+      }}
+    {%- else -%}
+      <div 
+        class="aura-arc-hero__bg aura-arc-hero__bg--placeholder"
+        role="img" 
+        aria-label="{{ section.settings.heading | default: 'Aura & Arc Hero' | escape }}"
+        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAPhzrAuKXLdCNSX5yQaS1KzTH-WIEnWjplktk3lQZwcWPYbJxh8s9VkrRwUTBttnM9HPmKyP8dhvVe0ZNoTiOLhfvuSfkfDkeIjfYFLch7ITSRnE8WiqGX2Op1bGK1zsq7EDVlu-QNB3zT4HhD3Dew6drwxEDIoTOh3-1RIAgeN_i-CURW1XGnjoBa12ahGyoCMpVJplfvysLaSDGnjCzkiiaAGzUDFaU3AFa971YEMsRxdLZ81IdW2g'); background-size: cover; background-position: center;">
+      </div>
+    {%- endif -%}
+  </div>
+
+  <!-- Ambient Gradient Overlay -->
+  <div class="aura-arc-hero__overlay"></div>
+
+  <!-- Content Container -->
+  <div class="aura-arc-hero__content aura-arc-hero__content--align-{{ section.settings.content_alignment }}">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'subheading' -%}
+          {%- if block.settings.subheading != blank -%}
+            <span
+              class="aura-arc-hero__subheading"
+              style="
+                {% if block.settings.subheading_size > 0 %}
+                  font-size: {{ block.settings.subheading_size }}px;
+                {% endif %}
+                {% if block.settings.subheading_color != blank and block.settings.subheading_color.alpha != 0 %}
+                  color: {{ block.settings.subheading_color }} !important;
+                {% endif %}
+              "
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.subheading | escape }}
+            </span>
+          {%- endif -%}
+
+        {%- when 'heading' -%}
+          {%- if block.settings.heading != blank -%}
+            <h1
+              class="aura-arc-hero__heading aura-arc-hero__heading--{{ block.settings.heading_size }}"
+              style="
+                {% if block.settings.heading_custom_size > 0 %}
+                  font-size: clamp({{ block.settings.heading_custom_size | times: 0.55 }}px, 5vw, {{ block.settings.heading_custom_size }}px) !important;
+                {% endif %}
+                {% if block.settings.heading_color != blank and block.settings.heading_color.alpha != 0 %}
+                  color: {{ block.settings.heading_color }} !important;
+                {% endif %}
+              "
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.heading }}
+            </h1>
+          {%- endif -%}
+
+        {%- when 'text' -%}
+          {%- if block.settings.text != blank -%}
+            <div
+              class="aura-arc-hero__description"
+              style="
+                {% if block.settings.text_size > 0 %}
+                  font-size: {{ block.settings.text_size }}px;
+                {% endif %}
+                {% if block.settings.text_max_width > 0 %}
+                  max-width: {{ block.settings.text_max_width }}px;
+                {% endif %}
+                {% if block.settings.text_color != blank and block.settings.text_color.alpha != 0 %}
+                  color: {{ block.settings.text_color }} !important;
+                {% endif %}
+              "
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.text }}
+            </div>
+          {%- endif -%}
+
+        {%- when 'buttons' -%}
+          <div
+            class="aura-arc-hero__actions aura-arc-hero__actions--{{ block.settings.button_size | default: 'medium' }}"
+            style="
+              --hero-btn-radius: {%- if block.settings.button_shape == 'square' -%}0px{%- elsif block.settings.button_shape == 'rounded' -%}8px{%- else -%}9999px{%- endif -%};
+              {%- if block.settings.button_1_bg_color != blank and block.settings.button_1_bg_color.alpha != 0 -%}--hero-btn1-bg: {{ block.settings.button_1_bg_color }};{%- endif -%}
+              {%- if block.settings.button_1_text_color != blank and block.settings.button_1_text_color.alpha != 0 -%}--hero-btn1-color: {{ block.settings.button_1_text_color }};{%- endif -%}
+              {%- if block.settings.button_2_bg_color != blank and block.settings.button_2_bg_color.alpha != 0 -%}--hero-btn2-bg: {{ block.settings.button_2_bg_color }};{%- endif -%}
+              {%- if block.settings.button_2_text_color != blank and block.settings.button_2_text_color.alpha != 0 -%}--hero-btn2-color: {{ block.settings.button_2_text_color }};{%- endif -%}
+              {%- if block.settings.button_2_border_color != blank and block.settings.button_2_border_color.alpha != 0 -%}--hero-btn2-border: {{ block.settings.button_2_border_color }};{%- endif -%}
+            "
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.button_label_1 != blank -%}
+              <a
+                {% if block.settings.button_link_1 == blank %}
+                  role="link" aria-disabled="true"
+                {% else %}
+                  href="{{ block.settings.button_link_1 }}"
+                {% endif %}
+                class="btn-aura btn-aura--{{ block.settings.button_style_1 }}"
+              >
+                {{ block.settings.button_label_1 | escape }}
+              </a>
+            {%- endif -%}
+
+            {%- if block.settings.button_label_2 != blank -%}
+              <a
+                {% if block.settings.button_link_2 == blank %}
+                  role="link" aria-disabled="true"
+                {% else %}
+                  href="{{ block.settings.button_link_2 }}"
+                {% endif %}
+                class="btn-aura btn-aura--{{ block.settings.button_style_2 }}"
+              >
+                {{ block.settings.button_label_2 | escape }}
+              </a>
+            {%- endif -%}
+          </div>
+
+        {%- when 'spacer' -%}
+          <div class="aura-arc-hero__spacer" style="height: {{ block.settings.spacer_height }}px;" {{ block.shopify_attributes }}></div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.aura_arc_hero.name",
+  "tag": "section",
+  "class": "section-aura-arc-hero",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.aura_arc_hero.settings.image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "t:sections.aura_arc_hero.settings.image_mobile.label"
+    },
+    {
+      "type": "range",
+      "id": "image_opacity",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "t:sections.aura_arc_hero.settings.image_opacity.label",
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "image_blend_mode",
+      "options": [
+        {
+          "value": "luminosity",
+          "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__1.label"
+        },
+        {
+          "value": "normal",
+          "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__2.label"
+        },
+        {
+          "value": "multiply",
+          "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__3.label"
+        },
+        {
+          "value": "overlay",
+          "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__4.label"
+        },
+        {
+          "value": "darken",
+          "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__5.label"
+        }
+      ],
+      "default": "luminosity",
+      "label": "t:sections.aura_arc_hero.settings.image_blend_mode.label"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "t:sections.aura_arc_hero.settings.overlay_opacity.label",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "t:sections.aura_arc_hero.settings.accent_color.label",
+      "default": "#f2ca50"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "desktop_height",
+      "options": [
+        {
+          "value": "500px",
+          "label": "t:sections.aura_arc_hero.settings.desktop_height.options__1.label"
+        },
+        {
+          "value": "650px",
+          "label": "t:sections.aura_arc_hero.settings.desktop_height.options__2.label"
+        },
+        {
+          "value": "85vh",
+          "label": "t:sections.aura_arc_hero.settings.desktop_height.options__3.label"
+        },
+        {
+          "value": "100vh",
+          "label": "t:sections.aura_arc_hero.settings.desktop_height.options__4.label"
+        }
+      ],
+      "default": "85vh",
+      "label": "t:sections.aura_arc_hero.settings.desktop_height.label"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.aura_arc_hero.settings.content_alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.aura_arc_hero.settings.content_alignment.options__2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.aura_arc_hero.settings.content_alignment.options__3.label"
+        }
+      ],
+      "default": "center",
+      "label": "t:sections.aura_arc_hero.settings.content_alignment.label"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 400,
+      "max": 1400,
+      "step": 50,
+      "unit": "px",
+      "label": "t:sections.aura_arc_hero.settings.content_max_width.label",
+      "default": 900
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 8,
+      "unit": "px",
+      "label": "t:sections.aura_arc_hero.settings.padding_top.label",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 8,
+      "unit": "px",
+      "label": "t:sections.aura_arc_hero.settings.padding_bottom.label",
+      "default": 96
+    },
+    {
+      "type": "checkbox",
+      "id": "overlap_header",
+      "default": true,
+      "label": "t:sections.aura_arc_hero.settings.overlap_header.label"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subheading",
+      "name": "t:sections.aura_arc_hero.blocks.subheading.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "subheading",
+          "default": "Masterpieces of Light",
+          "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading.label"
+        },
+        {
+          "type": "range",
+          "id": "subheading_size",
+          "min": 10,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_size.label",
+          "default": 14
+        },
+        {
+          "type": "color",
+          "id": "subheading_color",
+          "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_color.label"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "t:sections.aura_arc_hero.blocks.heading.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Exquisite Illumination for Refined Architectural Spaces",
+          "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "small",
+              "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_size.options__1.label"
+            },
+            {
+              "value": "medium",
+              "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_size.options__2.label"
+            },
+            {
+              "value": "large",
+              "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_size.options__3.label"
+            },
+            {
+              "value": "xl",
+              "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_size.options__4.label"
+            }
+          ],
+          "default": "medium",
+          "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_size.label"
+        },
+        {
+          "type": "range",
+          "id": "heading_custom_size",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_custom_size.label",
+          "default": 0
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_color.label"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.aura_arc_hero.blocks.text.name",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Bridging timeless artisan heritage with modern atmospheric engineering to curate unmatched residential and commercial environments.</p>",
+          "label": "t:sections.aura_arc_hero.blocks.text.settings.text.label"
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "min": 12,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "t:sections.aura_arc_hero.blocks.text.settings.text_size.label",
+          "default": 18
+        },
+        {
+          "type": "range",
+          "id": "text_max_width",
+          "min": 300,
+          "max": 1000,
+          "step": 10,
+          "unit": "px",
+          "label": "t:sections.aura_arc_hero.blocks.text.settings.text_max_width.label",
+          "default": 670
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "t:sections.aura_arc_hero.blocks.text.settings.text_color.label"
+        }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "t:sections.aura_arc_hero.blocks.buttons.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "button_size",
+          "options": [
+            {
+              "value": "small",
+              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_size.options__1.label"
+            },
+            {
+              "value": "medium",
+              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_size.options__2.label"
+            },
+            {
+              "value": "large",
+              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_size.options__3.label"
+            },
+            {
+              "value": "xl",
+              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_size.options__4.label"
+            }
+          ],
+          "default": "medium",
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_size.label"
+        },
+        {
+          "type": "select",
+          "id": "button_shape",
+          "options": [
+            {
+              "value": "pill",
+              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_shape.options__1.label"
+            },
+            {
+              "value": "rounded",
+              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_shape.options__2.label"
+            },
+            {
+              "value": "square",
+              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_shape.options__3.label"
+            }
+          ],
+          "default": "pill",
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_shape.label"
+        },
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "default": "Explore Illumination",
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_label_1.label"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_link_1.label"
+        },
+        {
+          "type": "select",
+          "id": "button_style_1",
+          "options": [
+            {
+              "value": "primary",
+              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__1.label"
+            },
+            {
+              "value": "secondary",
+              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__2.label"
+            },
+            {
+              "value": "outline",
+              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__3.label"
+            }
+          ],
+          "default": "primary",
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style_1.label"
+        },
+        {
+          "type": "color",
+          "id": "button_1_bg_color",
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_1_bg_color.label"
+        },
+        {
+          "type": "color",
+          "id": "button_1_text_color",
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_1_text_color.label"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "default": "View Catalog",
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_label_2.label"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_link_2.label"
+        },
+        {
+          "type": "select",
+          "id": "button_style_2",
+          "options": [
+            {
+              "value": "primary",
+              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__1.label"
+            },
+            {
+              "value": "secondary",
+              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__2.label"
+            },
+            {
+              "value": "outline",
+              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__3.label"
+            }
+          ],
+          "default": "secondary",
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style_2.label"
+        },
+        {
+          "type": "color",
+          "id": "button_2_bg_color",
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_2_bg_color.label"
+        },
+        {
+          "type": "color",
+          "id": "button_2_text_color",
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_2_text_color.label"
+        },
+        {
+          "type": "color",
+          "id": "button_2_border_color",
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_2_border_color.label"
+        }
+      ]
+    },
+    {
+      "type": "spacer",
+      "name": "t:sections.aura_arc_hero.blocks.spacer.name",
+      "settings": [
+        {
+          "type": "range",
+          "id": "spacer_height",
+          "min": 10,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "t:sections.aura_arc_hero.blocks.spacer.settings.spacer_height.label",
+          "default": 20
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.aura_arc_hero.presets.name",
+      "blocks": [
+        {
+          "type": "subheading"
+        },
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "buttons"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

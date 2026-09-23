@@ -9,43 +9,56 @@
  */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "aura_arc_hero": {
+      "type": "aura-arc-hero",
       "blocks": {
+        "subheading": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Masterpieces of Light"
+          }
+        },
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "heading": "Exquisite Illumination for Refined Architectural Spaces",
+            "heading_size": "medium"
           }
         },
-        "button": {
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Bridging timeless artisan heritage with modern atmospheric engineering to curate unmatched residential and commercial environments.</p>"
+          }
+        },
+        "buttons": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "Shop all",
+            "button_label_1": "Explore Illumination",
             "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "button_style_1": "primary",
+            "button_label_2": "View Catalog",
+            "button_link_2": "shopify://collections/all",
+            "button_style_2": "secondary"
           }
         }
       },
       "block_order": [
+        "subheading",
         "heading",
-        "button"
+        "text",
+        "buttons"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "image_opacity": 40,
+        "image_blend_mode": "luminosity",
+        "overlay_opacity": 100,
+        "accent_color": "#f2ca50",
+        "color_scheme": "scheme-4",
+        "desktop_height": "85vh",
+        "content_alignment": "center",
+        "content_max_width": 900,
+        "overlap_header": true
       }
     },
     "featured_collection": {
@@ -78,7 +91,7 @@
     }
   },
   "order": [
-    "image_banner",
+    "aura_arc_hero",
     "featured_collection"
   ]
 }
