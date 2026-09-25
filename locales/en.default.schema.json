@@ -3412,222 +3412,167 @@
         "name": "Aura & Arc Hero"
       },
       "settings": {
-        "image": {
-          "label": "Desktop background image"
+        "header__background": { "content": "Background image" },
+        "image": { "label": "Desktop background image" },
+        "image_mobile": { "label": "Mobile background image (optional)" },
+        "image_position": {
+          "label": "Image focal point",
+          "options__1": { "label": "Center" },
+          "options__2": { "label": "Top" },
+          "options__3": { "label": "Bottom" },
+          "options__4": { "label": "Left" },
+          "options__5": { "label": "Right" }
         },
-        "image_mobile": {
-          "label": "Mobile background image (optional)"
-        },
-        "image_opacity": {
-          "label": "Image opacity"
-        },
+        "image_opacity": { "label": "Image opacity" },
         "image_blend_mode": {
           "label": "Image blend mode",
-          "options__1": {
-            "label": "Luminosity (Moody Luxury)"
-          },
-          "options__2": {
-            "label": "Normal"
-          },
-          "options__3": {
-            "label": "Multiply"
-          },
-          "options__4": {
-            "label": "Overlay"
-          },
-          "options__5": {
-            "label": "Darken"
-          }
+          "options__1": { "label": "Luminosity (Moody Luxury)" },
+          "options__2": { "label": "Normal" },
+          "options__3": { "label": "Multiply" },
+          "options__4": { "label": "Overlay" },
+          "options__5": { "label": "Darken" }
         },
-        "overlay_opacity": {
-          "label": "Gradient overlay opacity"
-        },
-        "accent_color": {
-          "label": "Accent / highlight color"
-        },
+        "header__overlay": { "content": "Overlay" },
+        "overlay_color": { "label": "Overlay gradient color" },
+        "overlay_opacity": { "label": "Gradient overlay opacity" },
+        "header__colors": { "content": "Colors" },
+        "bg_color": { "label": "Section background color" },
+        "text_color": { "label": "Default text color" },
+        "accent_color": { "label": "Accent / highlight color" },
+        "header__layout": { "content": "Layout" },
         "desktop_height": {
           "label": "Desktop section height",
-          "options__1": {
-            "label": "Small (500px)"
-          },
-          "options__2": {
-            "label": "Medium (650px)"
-          },
-          "options__3": {
-            "label": "Large (85vh)"
-          },
-          "options__4": {
-            "label": "Full Screen (100vh)"
-          }
+          "options__1": { "label": "Small (500px)" },
+          "options__2": { "label": "Medium (650px)" },
+          "options__3": { "label": "Large (85vh)" },
+          "options__4": { "label": "Full Screen (100vh)" }
         },
         "content_alignment": {
           "label": "Content alignment",
-          "options__1": {
-            "label": "Left"
-          },
-          "options__2": {
-            "label": "Center"
-          },
-          "options__3": {
-            "label": "Right"
-          }
+          "options__1": { "label": "Left" },
+          "options__2": { "label": "Center" },
+          "options__3": { "label": "Right" }
         },
-        "content_max_width": {
-          "label": "Content maximum width"
-        },
-        "padding_top": {
-          "label": "Top padding (px)"
-        },
-        "padding_bottom": {
-          "label": "Bottom padding (px)"
-        },
-        "overlap_header": {
-          "label": "Overlap transparent header (negative top margin)"
-        }
+        "content_max_width": { "label": "Content maximum width" },
+        "content_gap": { "label": "Gap between blocks (px)" },
+        "header__spacing": { "content": "Spacing" },
+        "padding_top": { "label": "Top padding (px)" },
+        "padding_bottom": { "label": "Bottom padding (px)" },
+        "overlap_header": { "label": "Overlap transparent header (negative top margin)" },
+        "header__lighting": { "content": "Atmospheric Lighting & Lamp Effects" },
+        "enable_lamp_effect": { "label": "Enable lamp lighting effect" },
+        "lamp_pos_x": { "label": "Lamp horizontal position (%)" },
+        "lamp_pos_y": { "label": "Lamp vertical position (%)" },
+        "lamp_glow_radius": { "label": "Lamp glow spread (%)" },
+        "lamp_glow_color": { "label": "Lamp glow color" },
+        "ambient_shadow_color": { "label": "Ambient room shadow color" },
+        "ambient_shadow_opacity": { "label": "Room shadow darkness (%)" },
+        "header__cursor_light": { "content": "Interactive Cursor Light" },
+        "enable_cursor_light": { "label": "Enable cursor flashlight effect" },
+        "cursor_light_size": { "label": "Cursor light beam size (px)" },
+        "cursor_light_intensity": { "label": "Cursor light intensity (%)" },
+        "cursor_light_color": { "label": "Cursor light color" }
       },
       "blocks": {
         "subheading": {
           "name": "Subheading",
           "settings": {
-            "subheading": {
-              "label": "Text"
+            "subheading": { "label": "Text" },
+            "subheading_size": { "label": "Font size (px)" },
+            "subheading_letter_spacing": { "label": "Letter spacing (×0.01em)" },
+            "subheading_weight": {
+              "label": "Font weight",
+              "options__1": { "label": "Light (300)" },
+              "options__2": { "label": "Regular (400)" },
+              "options__3": { "label": "Medium (500)" },
+              "options__4": { "label": "Semi-bold (600)" },
+              "options__5": { "label": "Bold (700)" }
             },
-            "subheading_size": {
-              "label": "Subheading font size (px)"
+            "subheading_transform": {
+              "label": "Text transform",
+              "options__1": { "label": "None" },
+              "options__2": { "label": "UPPERCASE" },
+              "options__3": { "label": "lowercase" },
+              "options__4": { "label": "Capitalize" }
             },
-            "subheading_color": {
-              "label": "Subheading text color"
-            }
+            "subheading_color": { "label": "Subheading text color" }
           }
         },
         "heading": {
           "name": "Heading",
           "settings": {
-            "heading": {
-              "label": "Heading text"
-            },
+            "heading": { "label": "Heading text" },
             "heading_size": {
               "label": "Heading size preset",
-              "options__1": {
-                "label": "Small"
-              },
-              "options__2": {
-                "label": "Medium"
-              },
-              "options__3": {
-                "label": "Large"
-              },
-              "options__4": {
-                "label": "Extra large"
-              }
+              "options__1": { "label": "Small" },
+              "options__2": { "label": "Medium" },
+              "options__3": { "label": "Large" },
+              "options__4": { "label": "Extra large" }
             },
-            "heading_custom_size": {
-              "label": "Custom font size (0 for preset)"
+            "heading_custom_size": { "label": "Custom font size (0 = use preset)" },
+            "heading_max_width": { "label": "Max width (0 = inherit, px)" },
+            "heading_line_height": { "label": "Line height (0 = default, ×0.01)" },
+            "heading_letter_spacing": { "label": "Letter spacing (×0.01em)" },
+            "heading_font_weight": {
+              "label": "Font weight",
+              "options__1": { "label": "Default (theme)" },
+              "options__2": { "label": "Light (300)" },
+              "options__3": { "label": "Regular (400)" },
+              "options__4": { "label": "Medium (500)" },
+              "options__5": { "label": "Semi-bold (600)" },
+              "options__6": { "label": "Bold (700)" }
             },
-            "heading_color": {
-              "label": "Heading text color"
-            }
+            "heading_color": { "label": "Heading text color" }
           }
         },
         "text": {
           "name": "Description text",
           "settings": {
-            "text": {
-              "label": "Description"
-            },
-            "text_size": {
-              "label": "Description font size (px)"
-            },
-            "text_max_width": {
-              "label": "Description maximum width (px)"
-            },
-            "text_color": {
-              "label": "Description text color"
-            }
+            "text": { "label": "Description" },
+            "text_size": { "label": "Description font size (px)" },
+            "text_max_width": { "label": "Description maximum width (px)" },
+            "text_line_height": { "label": "Line height (0 = default, ×0.01)" },
+            "text_color": { "label": "Description text color" }
           }
         },
         "buttons": {
           "name": "Action buttons",
           "settings": {
-            "button_label_1": {
-              "label": "Primary button label"
-            },
-            "button_link_1": {
-              "label": "Primary button link"
-            },
-            "button_style_1": {
-              "label": "Primary button style"
-            },
-            "button_label_2": {
-              "label": "Secondary button label"
-            },
-            "button_link_2": {
-              "label": "Secondary button link"
-            },
-            "button_style_2": {
-              "label": "Secondary button style"
-            },
+            "button_label_1": { "label": "Primary button label" },
+            "button_link_1": { "label": "Primary button link" },
+            "button_style_1": { "label": "Primary button style" },
+            "button_label_2": { "label": "Secondary button label" },
+            "button_link_2": { "label": "Secondary button link" },
+            "button_style_2": { "label": "Secondary button style" },
             "button_style": {
-              "options__1": {
-                "label": "Primary Gold Glow"
-              },
-              "options__2": {
-                "label": "Secondary Glassmorphism"
-              },
-              "options__3": {
-                "label": "Outline Minimal"
-              }
+              "options__1": { "label": "Primary Gold Glow" },
+              "options__2": { "label": "Secondary Glassmorphism" },
+              "options__3": { "label": "Outline Minimal" }
             },
-            "button_1_bg_color": {
-              "label": "Primary button background"
-            },
-            "button_1_text_color": {
-              "label": "Primary button text color"
-            },
-            "button_2_bg_color": {
-              "label": "Secondary button background"
-            },
-            "button_2_text_color": {
-              "label": "Secondary button text color"
-            },
-            "button_2_border_color": {
-              "label": "Secondary button border color"
-            },
+            "button_1_bg_color": { "label": "Primary button background" },
+            "button_1_text_color": { "label": "Primary button text color" },
+            "button_2_bg_color": { "label": "Secondary button background" },
+            "button_2_text_color": { "label": "Secondary button text color" },
+            "button_2_border_color": { "label": "Secondary button border color" },
             "button_shape": {
               "label": "Button shape",
-              "options__1": {
-                "label": "Pill (Rounded Caps)"
-              },
-              "options__2": {
-                "label": "Slightly Rounded"
-              },
-              "options__3": {
-                "label": "Sharp Square"
-              }
+              "options__1": { "label": "Pill (Rounded Caps)" },
+              "options__2": { "label": "Slightly Rounded" },
+              "options__3": { "label": "Sharp Square" }
             },
             "button_size": {
               "label": "Button size",
-              "options__1": {
-                "label": "Small"
-              },
-              "options__2": {
-                "label": "Medium"
-              },
-              "options__3": {
-                "label": "Large"
-              },
-              "options__4": {
-                "label": "Extra large"
-              }
+              "options__1": { "label": "Small" },
+              "options__2": { "label": "Medium" },
+              "options__3": { "label": "Large" },
+              "options__4": { "label": "Extra large" }
             }
           }
         },
         "spacer": {
           "name": "Vertical spacer",
           "settings": {
-            "spacer_height": {
-              "label": "Spacer height (px)"
-            }
+            "spacer_height": { "label": "Spacer height (px)" }
           }
         }
       }
@@ -3638,54 +3583,78 @@
         "name": "Aura & Arc Header"
       },
       "settings": {
-        "show_announcement": {
-          "label": "Show announcement bar"
-        },
-        "announcement_text": {
-          "label": "Announcement bar text"
-        },
-        "announcement_link": {
-          "label": "Announcement bar link"
-        },
-        "announcement_bg": {
-          "label": "Announcement bar background"
-        },
-        "announcement_color": {
-          "label": "Announcement bar text color"
-        },
+        "header__announcement": { "content": "Announcement bar" },
+        "show_announcement": { "label": "Show announcement bar" },
+        "announcement_text": { "label": "Announcement bar text" },
+        "announcement_link": { "label": "Announcement bar link" },
+        "announcement_bg": { "label": "Announcement bar background" },
+        "announcement_color": { "label": "Announcement bar text color" },
+        "announcement_font_size": { "label": "Announcement font size (px)" },
+        "header__header": { "content": "Header bar" },
         "position_mode": {
           "label": "Header position mode",
-          "options__1": {
-            "label": "Sticky on Scroll"
-          },
-          "options__2": {
-            "label": "Fixed Glassmorphism Underlap"
-          },
-          "options__3": {
-            "label": "Static Standard"
-          }
+          "options__1": { "label": "Sticky on Scroll" },
+          "options__2": { "label": "Fixed Glassmorphism Underlap" },
+          "options__3": { "label": "Static Standard" }
         },
-        "logo": {
-          "label": "Custom brand logo image"
+        "header_height": { "label": "Header bar height (px)" },
+        "header_max_width": { "label": "Header max content width (px)" },
+        "header__background": { "content": "Background & glass effect" },
+        "transparent_at_top": {
+          "label": "Transparent at top of page",
+          "info": "Header starts transparent and gains the dark background and blur when scrolling down"
         },
-        "logo_width": {
-          "label": "Logo maximum width (px)"
+        "header_bg_color": { "label": "Dark background color" },
+        "header_bg_opacity": { "label": "Initial background opacity" },
+        "header_blur_top": { "label": "Blur at top of page (px)" },
+        "header__scroll_effects": { "content": "Scroll & blur effects" },
+        "header_bg_color_scrolled": { "label": "Scrolled dark background color" },
+        "header_bg_opacity_scrolled": { "label": "Scrolled background opacity" },
+        "header_blur": { "label": "Blur when scrolled (px)" },
+        "header_border_color": { "label": "Scrolled bottom border color" },
+        "header__colors": { "content": "Colors" },
+        "header_text_color": { "label": "Brand title & link color" },
+        "header_icon_color": { "label": "Icon color (cart, mobile toggle)" },
+        "accent_color": { "label": "Accent color" },
+        "header__logo": { "content": "Logo & brand" },
+        "logo": { "label": "Custom brand logo image" },
+        "logo_width": { "label": "Logo maximum width (px)" },
+        "brand_title": { "label": "Brand title text" },
+        "show_title": { "label": "Show brand title text" },
+        "header__title_typography": { "content": "Brand title typography" },
+        "title_font_size": { "label": "Brand title font size (px)" },
+        "title_letter_spacing": { "label": "Letter spacing (×0.01em)" },
+        "title_transform": {
+          "label": "Text transform",
+          "options__1": { "label": "None" },
+          "options__2": { "label": "UPPERCASE" },
+          "options__3": { "label": "lowercase" },
+          "options__4": { "label": "Capitalize" }
         },
-        "brand_title": {
-          "label": "Brand title text"
+        "title_font_weight": {
+          "label": "Font weight",
+          "options__1": { "label": "Light (300)" },
+          "options__2": { "label": "Regular (400)" },
+          "options__3": { "label": "Medium (500)" },
+          "options__4": { "label": "Semi-bold (600)" },
+          "options__5": { "label": "Bold (700)" }
         },
-        "show_title": {
-          "label": "Show brand title text"
+        "header__nav": { "content": "Navigation" },
+        "menu": { "label": "Navigation menu" },
+        "nav_text_color": { "label": "Nav link color" },
+        "nav_text_color_hover": { "label": "Nav link hover color" },
+        "nav_font_size": { "label": "Nav font size (px)" },
+        "nav_font_weight": {
+          "label": "Nav font weight",
+          "options__1": { "label": "Light (300)" },
+          "options__2": { "label": "Regular (400)" },
+          "options__3": { "label": "Medium (500)" },
+          "options__4": { "label": "Semi-bold (600)" },
+          "options__5": { "label": "Bold (700)" }
         },
-        "menu": {
-          "label": "Navigation menu"
-        },
-        "accent_color": {
-          "label": "Accent color"
-        },
-        "header_height": {
-          "label": "Header bar height (px)"
-        }
+        "nav_gap": { "label": "Gap between nav links (px)" },
+        "header__mobile": { "content": "Mobile drawer" },
+        "drawer_bg_color": { "label": "Mobile drawer background color" }
       }
     }
   }

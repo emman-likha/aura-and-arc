@@ -50,15 +50,18 @@
         "buttons"
       ],
       "settings": {
-        "image_opacity": 40,
-        "image_blend_mode": "luminosity",
-        "overlay_opacity": 100,
+        "image_opacity": 90,
+        "image_blend_mode": "normal",
+        "overlay_opacity": 30,
         "accent_color": "#f2ca50",
         "color_scheme": "scheme-4",
-        "desktop_height": "85vh",
-        "content_alignment": "center",
+        "desktop_height": "100vh",
+        "content_alignment": "left",
         "content_max_width": 900,
-        "overlap_header": true
+        "overlap_header": true,
+        "enable_lamp_effect": true,
+        "enable_cursor_light": true,
+        "ambient_shadow_opacity": 85
       }
     },
     "featured_collection": {

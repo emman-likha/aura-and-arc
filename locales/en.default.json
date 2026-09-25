@@ -463,7 +463,20 @@
         },
         "overlap_header": {
           "label": "Overlap transparent header (negative top margin)"
-        }
+        },
+        "header__lighting": { "content": "Atmospheric Lighting & Lamp Effects" },
+        "enable_lamp_effect": { "label": "Enable lamp lighting effect" },
+        "lamp_pos_x": { "label": "Lamp horizontal position (%)" },
+        "lamp_pos_y": { "label": "Lamp vertical position (%)" },
+        "lamp_glow_radius": { "label": "Lamp glow spread (%)" },
+        "lamp_glow_color": { "label": "Lamp glow color" },
+        "ambient_shadow_color": { "label": "Ambient room shadow color" },
+        "ambient_shadow_opacity": { "label": "Room shadow darkness (%)" },
+        "header__cursor_light": { "content": "Interactive Cursor Light" },
+        "enable_cursor_light": { "label": "Enable cursor flashlight effect" },
+        "cursor_light_size": { "label": "Cursor light beam size (px)" },
+        "cursor_light_intensity": { "label": "Cursor light intensity (%)" },
+        "cursor_light_color": { "label": "Cursor light color" }
       },
       "blocks": {
         "subheading": {

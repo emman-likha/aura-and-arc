@@ -1,6 +1,8 @@
 /* ==========================================================================
    Aura & Arc — Custom Modular Header Component
-   Based on docs/navbar.html reference design
+   ALL visual values are driven by CSS custom properties set in the Liquid
+   {%- style -%} block — do NOT add raw hex/rem values here for things a
+   store owner might want to change.
    ========================================================================== */
 
 /* Top Announcement Bar */
@@ -10,10 +12,10 @@
   color: var(--announcement-color, #f2ca50);
   padding: 0.6rem clamp(1.25rem, 4vw, 2.5rem);
   text-align: center;
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  font-weight: 500;
+  font-size: var(--announcement-font-size, 0.75rem);
+  letter-spacing: var(--announcement-letter-spacing, 0.15em);
+  text-transform: var(--announcement-transform, uppercase);
+  font-weight: var(--announcement-font-weight, 500);
   box-sizing: border-box;
   position: relative;
   z-index: 51;
@@ -33,12 +35,34 @@
   position: relative;
   width: 100%;
   z-index: 50;
-  background-color: rgba(14, 14, 16, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  background-color: var(--header-bg-color, rgba(14, 14, 16, 0.8));
+  backdrop-filter: blur(var(--header-blur-top, 0px));
+  -webkit-backdrop-filter: blur(var(--header-blur-top, 0px));
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              backdrop-filter 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              -webkit-backdrop-filter 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease,
+              box-shadow 0.35s ease;
+}
+
+/* Scrolled state: dark surface background, frosted glass blur, and ambient border & elevation */
+.aura-arc-header--scrolled {
+  background-color: var(--header-bg-color-scrolled, rgba(14, 14, 16, 0.9));
+  backdrop-filter: blur(var(--header-blur-scrolled, 20px));
+  -webkit-backdrop-filter: blur(var(--header-blur-scrolled, 20px));
+  border-bottom-color: var(--header-border-color, rgba(255, 255, 255, 0.08));
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* Optional transparent-at-top state before user scrolls */
+.aura-arc-header--transparent-top:not(.aura-arc-header--scrolled) {
+  background-color: transparent !important;
+  backdrop-filter: blur(0px) !important;
+  -webkit-backdrop-filter: blur(0px) !important;
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
 }
 
 .aura-arc-header--fixed {
@@ -72,7 +96,7 @@
   align-items: center;
   gap: 0.875rem;
   text-decoration: none;
-  color: #fbfbf9;
+  color: var(--header-text-color, #fbfbf9);
 }
 
 .aura-arc-header__logo {
@@ -84,11 +108,11 @@
 
 .aura-arc-header__title {
   font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
-  font-size: 1.25rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #fbfbf9;
-  font-weight: 500;
+  font-size: var(--header-title-size, 1.25rem);
+  letter-spacing: var(--header-title-letter-spacing, 0.18em);
+  text-transform: var(--header-title-transform, uppercase);
+  color: var(--header-text-color, #fbfbf9);
+  font-weight: var(--header-title-weight, 500);
   line-height: 1;
 }
 
@@ -96,7 +120,7 @@
 .aura-arc-header__nav {
   display: none;
   align-items: center;
-  gap: 2rem;
+  gap: var(--header-nav-gap, 2rem);
 }
 
 @media screen and (min-width: 768px) {
@@ -108,15 +132,15 @@
 .aura-arc-header__nav-item {
   text-decoration: none;
   font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: 0.875rem;
-  color: rgba(251, 251, 249, 0.7);
+  font-size: var(--header-nav-size, 0.875rem);
+  color: var(--header-nav-color, rgba(251, 251, 249, 0.7));
   transition: color 0.25s ease;
   letter-spacing: 0.05em;
-  font-weight: 400;
+  font-weight: var(--header-nav-weight, 400);
 }
 
 .aura-arc-header__nav-item:hover {
-  color: #fbfbf9;
+  color: var(--header-nav-color-hover, #fbfbf9);
 }
 
 .aura-arc-header__nav-item--active {
@@ -133,7 +157,7 @@
 
 .aura-arc-header__cart-link {
   position: relative;
-  color: #fbfbf9;
+  color: var(--header-icon-color, #fbfbf9);
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -202,7 +226,7 @@
   justify-content: center;
   background: transparent;
   border: none;
-  color: #fbfbf9;
+  color: var(--header-icon-color, #fbfbf9);
   cursor: pointer;
   padding: 0.5rem;
 }
@@ -227,7 +251,7 @@
   bottom: 0;
   width: 80%;
   max-width: 20rem;
-  background-color: #121215;
+  background-color: var(--header-drawer-bg, #121215);
   z-index: 100;
   padding: 2rem 1.5rem;
   display: flex;
@@ -246,7 +270,7 @@
   align-self: flex-end;
   background: transparent;
   border: none;
-  color: #fbfbf9;
+  color: var(--header-text-color, #fbfbf9);
   cursor: pointer;
 }
 
@@ -259,7 +283,7 @@
 .aura-arc-header__drawer-item {
   text-decoration: none;
   font-size: 1.125rem;
-  color: rgba(251, 251, 249, 0.85);
+  color: var(--header-nav-color, rgba(251, 251, 249, 0.85));
   padding-bottom: 0.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }

@@ -1,6 +1,9 @@
 /* ==========================================================================
    Aura & Arc — Custom Modular Hero Section
    Based on docs/hero.html reference design
+   ALL visual values are driven by CSS custom properties set in the Liquid
+   {%- style -%} block — do NOT add raw hex/rem values here for things a
+   store owner might want to change.
    ========================================================================== */
 
 .aura-arc-hero {
@@ -16,20 +19,40 @@
   padding-right: clamp(1rem, 5vw, 3rem);
   padding-top: var(--hero-padding-top, 6rem);
   padding-bottom: var(--hero-padding-bottom, 6rem);
-  min-height: var(--hero-min-height, 85vh);
-  background-color: #0e0e10;
-  color: #fbfbf9;
+  min-height: var(--hero-min-height, 100vh);
+  background-color: var(--hero-bg-color, #0e0e10);
+  color: var(--hero-text-color, #fbfbf9);
+}
+
+@supports (min-height: 100dvh) {
+  .aura-arc-hero {
+    min-height: var(--hero-min-height, 100dvh);
+  }
 }
 
 .aura-arc-hero--overlap-header {
-  margin-top: -8rem;
-  padding-top: 12rem;
+  margin-top: calc(var(--hero-overlap-top, -8rem));
+  padding-top: calc(var(--hero-overlap-padding, 12rem));
+  min-height: calc(var(--hero-min-height, 100vh) + 8rem);
+}
+
+@supports (min-height: 100dvh) {
+  .aura-arc-hero--overlap-header {
+    min-height: calc(var(--hero-min-height, 100dvh) + 8rem);
+  }
 }
 
 @media screen and (max-width: 749px) {
   .aura-arc-hero--overlap-header {
-    margin-top: -5rem;
-    padding-top: 8rem;
+    margin-top: calc(var(--hero-overlap-top-mobile, -5rem));
+    padding-top: calc(var(--hero-overlap-padding-mobile, 8rem));
+    min-height: calc(var(--hero-min-height, 100vh) + 5rem);
+  }
+
+  @supports (min-height: 100dvh) {
+    .aura-arc-hero--overlap-header {
+      min-height: calc(var(--hero-min-height, 100dvh) + 5rem);
+    }
   }
 }
 
@@ -48,7 +71,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: var(--hero-img-position, center);
   opacity: var(--hero-img-opacity, 0.4);
   mix-blend-mode: var(--hero-img-blend-mode, luminosity);
   transition: opacity 0.3s ease;
@@ -67,19 +90,115 @@
   }
 }
 
-/* Ambient Gradient Overlay */
-.aura-arc-hero__overlay {
+/* Ambient Lamp Lighting & Architectural Shadow Aperture */
+.aura-arc-hero__lamp-aperture {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
+  background: radial-gradient(
+    circle at var(--hero-lamp-x, 82%) var(--hero-lamp-y, 36%),
+    transparent 0%,
+    transparent 14%,
+    rgba(11, 11, 14, 0.4) 22%,
+    var(--hero-shadow-color, #0b0b0e) var(--hero-lamp-radius, 34%),
+    var(--hero-shadow-color, #0b0b0e) 100%
+  );
+  opacity: var(--hero-shadow-opacity, 0.85);
+  transition: opacity 0.4s ease;
+}
+
+.aura-arc-hero__lamp-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--hero-lamp-x, 82%) var(--hero-lamp-y, 36%),
+    var(--hero-lamp-glow-color, #f2ca50) 0%,
+    rgba(242, 202, 80, 0.4) 15%,
+    rgba(242, 202, 80, 0.1) 28%,
+    transparent var(--hero-lamp-radius, 34%)
+  );
+  mix-blend-mode: screen;
+  opacity: 0.85;
+  transition: opacity 0.4s ease;
+}
+
+/* Ambient Gradient Overlay */
+.aura-arc-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
   background: linear-gradient(
     to top,
-    #0e0e10 0%,
-    rgba(14, 14, 16, 0.6) 50%,
+    var(--hero-overlay-color, #0e0e10) 0%,
+    var(--hero-overlay-color-mid, rgba(14, 14, 16, 0.6)) 50%,
     transparent 100%
   );
   opacity: var(--hero-overlay-opacity, 1);
+}
+
+/* Interactive Cursor Spotlight ("Flashlight") Layer */
+.aura-arc-hero__cursor-spotlight {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle var(--hero-cursor-size, 450px) at var(--hero-cursor-x, 50%) var(--hero-cursor-y, 50%),
+    rgba(255, 255, 255, 0.95) 0%,
+    var(--hero-cursor-color, #ffe8b3) 25%,
+    rgba(242, 202, 80, 0.45) 50%,
+    rgba(242, 202, 80, 0.15) 75%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  transition: opacity 0.35s ease;
+}
+
+.aura-arc-hero.is-spotlight-active .aura-arc-hero__cursor-spotlight {
+  opacity: var(--hero-cursor-intensity, 0.85);
+}
+
+/* Luminous Cursor Flame / Light Particle */
+.aura-arc-hero__cursor-flame {
+  position: absolute;
+  z-index: 5;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  pointer-events: none;
+  left: 0;
+  top: 0;
+  transform: translate3d(
+    calc(var(--hero-cursor-x, -50px) - 9px),
+    calc(var(--hero-cursor-y, -50px) - 9px),
+    0
+  );
+  background: radial-gradient(circle, #ffffff 30%, var(--hero-cursor-color, #ffe8b3) 70%, transparent 100%);
+  box-shadow:
+    0 0 16px 4px #ffffff,
+    0 0 32px 8px var(--hero-cursor-color, #ffe8b3),
+    0 0 60px 18px rgba(242, 202, 80, 0.65);
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity 0.25s ease, transform 0.12s ease-out;
+}
+
+.aura-arc-hero.is-spotlight-active .aura-arc-hero__cursor-flame {
+  opacity: 1;
+}
+
+.aura-arc-hero.is-spotlight-magnetic .aura-arc-hero__cursor-flame {
+  transform: translate3d(
+    calc(var(--hero-cursor-x, -50px) - 18px),
+    calc(var(--hero-cursor-y, -50px) - 18px),
+    0
+  ) scale(2);
+  opacity: 1;
 }
 
 /* Content Container */
@@ -91,10 +210,14 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--hero-content-gap, 1.5rem);
 }
 
 /* Alignment Modifier Classes */
+.aura-arc-hero--align-left {
+  align-items: flex-start;
+}
+
 .aura-arc-hero__content--align-center {
   text-align: center;
   align-items: center;
@@ -103,6 +226,19 @@
 .aura-arc-hero__content--align-left {
   text-align: left;
   align-items: flex-start;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+@media screen and (min-width: 990px) {
+  .aura-arc-hero--align-left {
+    padding-left: clamp(2.5rem, 8vw, 8rem);
+    padding-right: clamp(2rem, 5vw, 4rem);
+  }
+
+  .aura-arc-hero__content--align-left {
+    max-width: min(var(--hero-content-max-width, 56rem), 52vw);
+  }
 }
 
 .aura-arc-hero__content--align-right {
@@ -115,10 +251,10 @@
   display: inline-block;
   font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   font-size: clamp(0.75rem, 1vw, 0.875rem);
-  color: var(--aura-arc-accent, #f2ca50);
+  color: var(--hero-subheading-color, var(--aura-arc-accent, #f2ca50));
   letter-spacing: 0.25em;
-  text-transform: uppercase;
-  font-weight: 600;
+  text-transform: var(--hero-subheading-transform, uppercase);
+  font-weight: var(--hero-subheading-weight, 600);
   line-height: 1.3;
 }
 
@@ -129,7 +265,7 @@
   font-style: var(--font-heading-style, normal);
   font-weight: var(--font-heading-weight, 400);
   line-height: 1.15;
-  color: #fbfbf9 !important;
+  color: var(--hero-heading-color, #fbfbf9);
   word-break: break-word;
 }
 
@@ -155,13 +291,13 @@
   font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   font-size: clamp(1rem, 1.2vw, 1.125rem);
   line-height: 1.6;
-  color: rgba(251, 251, 249, 0.75) !important;
+  color: var(--hero-desc-color, rgba(251, 251, 249, 0.75));
   max-width: 42rem;
 }
 
 .aura-arc-hero__description p {
   margin: 0;
-  color: rgba(251, 251, 249, 0.75) !important;
+  color: inherit;
 }
 
 /* Call to Actions (Button Group) */
@@ -229,34 +365,34 @@
 .aura-arc-hero .btn-aura--primary,
 .aura-arc-hero .btn-aura--primary:link,
 .aura-arc-hero .btn-aura--primary:visited {
-  background-color: var(--aura-arc-accent, #f2ca50) !important;
-  color: #121212 !important;
-  border: 1px solid var(--aura-arc-accent, #f2ca50) !important;
+  background-color: var(--hero-btn1-bg, var(--aura-arc-accent, #f2ca50)) !important;
+  color: var(--hero-btn1-color, #121212) !important;
+  border: 1px solid var(--hero-btn1-bg, var(--aura-arc-accent, #f2ca50)) !important;
 }
 
 .aura-arc-hero .btn-aura--primary:hover,
 .aura-arc-hero .btn-aura--primary:focus {
   box-shadow: 0 0 25px rgba(242, 202, 80, 0.5) !important;
   transform: translateY(-2px);
-  color: #121212 !important;
+  color: var(--hero-btn1-color, #121212) !important;
 }
 
 /* Secondary Glassmorphism Button */
 .aura-arc-hero .btn-aura--secondary,
 .aura-arc-hero .btn-aura--secondary:link,
 .aura-arc-hero .btn-aura--secondary:visited {
-  background-color: rgba(30, 30, 34, 0.8) !important;
-  color: #ffffff !important;
+  background-color: var(--hero-btn2-bg, rgba(30, 30, 34, 0.8)) !important;
+  color: var(--hero-btn2-color, #ffffff) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(242, 202, 80, 0.35) !important;
+  border: 1px solid var(--hero-btn2-border, rgba(242, 202, 80, 0.35)) !important;
 }
 
 .aura-arc-hero .btn-aura--secondary:hover,
 .aura-arc-hero .btn-aura--secondary:focus {
   border-color: var(--aura-arc-accent, #f2ca50) !important;
   background-color: rgba(50, 50, 58, 0.95) !important;
-  color: #ffffff !important;
+  color: var(--hero-btn2-color, #ffffff) !important;
   transform: translateY(-2px);
   box-shadow: 0 0 18px rgba(242, 202, 80, 0.3) !important;
 }
@@ -266,7 +402,7 @@
 .aura-arc-hero .btn-aura--outline:link,
 .aura-arc-hero .btn-aura--outline:visited {
   background-color: transparent !important;
-  color: #ffffff !important;
+  color: var(--hero-text-color, #ffffff) !important;
   border: 1px solid rgba(255, 255, 255, 0.7) !important;
 }
 

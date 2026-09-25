@@ -1,24 +1,63 @@
 {{ 'aura-arc-hero.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'aura-arc-hero.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign heading_tag        = 'h1'
+  assign bg_color           = section.settings.bg_color
+  assign text_color         = section.settings.text_color
+  assign overlay_color      = section.settings.overlay_color
+  assign content_gap        = section.settings.content_gap
+  assign lamp_enabled       = true
+  if section.settings.enable_lamp_effect == false
+    assign lamp_enabled     = false
+  endif
+
+  assign cursor_enabled     = true
+  if section.settings.enable_cursor_light == false
+    assign cursor_enabled   = false
+  endif
+
+  assign shadow_color       = section.settings.ambient_shadow_color | default: '#0b0b0e'
+  assign shadow_opacity_dec = section.settings.ambient_shadow_opacity | default: 85 | divided_by: 100.0
+  assign lamp_color         = section.settings.lamp_glow_color | default: '#f2ca50'
+  assign cursor_color       = section.settings.cursor_light_color | default: '#ffe8b3'
+  assign cursor_intensity   = section.settings.cursor_light_intensity | default: 75 | divided_by: 100.0
+-%}
 
 {%- style -%}
   #shopify-section-{{ section.id }} .aura-arc-hero {
-    --hero-min-height: {{ section.settings.desktop_height }};
-    --hero-padding-top: {{ section.settings.padding_top }}px;
-    --hero-padding-bottom: {{ section.settings.padding_bottom }}px;
-    --hero-img-opacity: {{ section.settings.image_opacity | divided_by: 100.0 }};
-    --hero-img-blend-mode: {{ section.settings.image_blend_mode }};
-    --hero-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
-    --hero-content-max-width: {{ section.settings.content_max_width }}px;
+    --hero-min-height:              {{ section.settings.desktop_height }};
+    --hero-padding-top:             {{ section.settings.padding_top }}px;
+    --hero-padding-bottom:          {{ section.settings.padding_bottom }}px;
+    --hero-bg-color:                {{ bg_color }};
+    --hero-text-color:              {{ text_color }};
+    --hero-img-opacity:             {{ section.settings.image_opacity | divided_by: 100.0 }};
+    --hero-img-blend-mode:          {{ section.settings.image_blend_mode }};
+    --hero-img-position:            {{ section.settings.image_position }};
+    --hero-overlay-opacity:         {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --hero-overlay-color:           {{ overlay_color }};
+    --hero-overlay-color-mid:       {{ overlay_color | color_modify: 'alpha', 0.6 }};
+    --hero-content-max-width:       {{ section.settings.content_max_width }}px;
+    --hero-content-gap:             {{ content_gap }}px;
+    --hero-lamp-x:                  {{ section.settings.lamp_pos_x | default: 82 }}%;
+    --hero-lamp-y:                  {{ section.settings.lamp_pos_y | default: 36 }}%;
+    --hero-lamp-radius:             {{ section.settings.lamp_glow_radius | default: 34 }}%;
+    --hero-lamp-glow-color:         {{ lamp_color }};
+    --hero-shadow-color:            {{ shadow_color }};
+    --hero-shadow-opacity:          {{ shadow_opacity_dec }};
+    --hero-cursor-size:             {{ section.settings.cursor_light_size | default: 425 }}px;
+    --hero-cursor-intensity:        {{ cursor_intensity }};
+    --hero-cursor-color:            {{ cursor_color }};
     {%- if section.settings.accent_color != blank -%}
-      --aura-arc-accent: {{ section.settings.accent_color }};
+      --aura-arc-accent:            {{ section.settings.accent_color }};
     {%- endif -%}
   }
 {%- endstyle -%}
 
-<div class="aura-arc-hero color-{{ section.settings.color_scheme }} gradient{% if section.settings.overlap_header %} aura-arc-hero--overlap-header{% endif %}">
+<div class="aura-arc-hero color-{{ section.settings.color_scheme }} gradient aura-arc-hero--align-{{ section.settings.content_alignment }}{% if section.settings.overlap_header %} aura-arc-hero--overlap-header{% endif %}">
   <!-- Background Media & Image Layer -->
-  <div class="aura-arc-hero__bg-container">
-    {%- if section.settings.image != blank -%}
+  {%- if section.settings.image != blank -%}
+    <div class="aura-arc-hero__bg-container">
       {%- assign mobile_class = '' -%}
       {%- if section.settings.image_mobile != blank -%}
         {%- assign mobile_class = ' has-mobile-bg' -%}
@@ -33,28 +72,36 @@
             | escape
         }}
       {%- endif -%}
+      {%- assign desktop_classes = 'aura-arc-hero__bg aura-arc-hero__bg--desktop' | append: mobile_class -%}
+      {%- assign desktop_alt = section.settings.image.alt | default: '' | escape -%}
       {{
         section.settings.image
         | image_url: width: 3840
         | image_tag:
           loading: 'eager',
-          class: 'aura-arc-hero__bg aura-arc-hero__bg--desktop' | append: mobile_class,
+          class: desktop_classes,
           widths: '750, 1100, 1500, 1780, 2000, 3000, 3840',
-          alt: section.settings.image.alt
-          | escape
+          alt: desktop_alt
       }}
-    {%- else -%}
-      <div 
-        class="aura-arc-hero__bg aura-arc-hero__bg--placeholder"
-        role="img" 
-        aria-label="{{ section.settings.heading | default: 'Aura & Arc Hero' | escape }}"
-        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAPhzrAuKXLdCNSX5yQaS1KzTH-WIEnWjplktk3lQZwcWPYbJxh8s9VkrRwUTBttnM9HPmKyP8dhvVe0ZNoTiOLhfvuSfkfDkeIjfYFLch7ITSRnE8WiqGX2Op1bGK1zsq7EDVlu-QNB3zT4HhD3Dew6drwxEDIoTOh3-1RIAgeN_i-CURW1XGnjoBa12ahGyoCMpVJplfvysLaSDGnjCzkiiaAGzUDFaU3AFa971YEMsRxdLZ81IdW2g'); background-size: cover; background-position: center;">
-      </div>
-    {%- endif -%}
-  </div>
+    </div>
 
-  <!-- Ambient Gradient Overlay -->
-  <div class="aura-arc-hero__overlay"></div>
+    <!-- Ambient Shadow & Lamp Light Aperture -->
+    {%- if lamp_enabled -%}
+      <div class="aura-arc-hero__lamp-aperture" aria-hidden="true"></div>
+      <div class="aura-arc-hero__lamp-glow" aria-hidden="true"></div>
+    {%- endif -%}
+
+    <!-- Ambient Gradient Overlay -->
+    {%- if section.settings.overlay_opacity > 0 -%}
+      <div class="aura-arc-hero__overlay"></div>
+    {%- endif -%}
+
+    <!-- Interactive Cursor Spotlight ("Flashlight") Layer -->
+    {%- if cursor_enabled -%}
+      <div class="aura-arc-hero__cursor-spotlight" aria-hidden="true"></div>
+      <div class="aura-arc-hero__cursor-flame" aria-hidden="true"></div>
+    {%- endif -%}
+  {%- endif -%}
 
   <!-- Content Container -->
   <div class="aura-arc-hero__content aura-arc-hero__content--align-{{ section.settings.content_alignment }}">
@@ -62,16 +109,18 @@
       {%- case block.type -%}
         {%- when 'subheading' -%}
           {%- if block.settings.subheading != blank -%}
+            {%- style -%}
+              #shopify-section-{{ section.id }} [data-block-id="{{ block.id }}"].aura-arc-hero__subheading {
+                {%- if block.settings.subheading_size > 0 %}font-size: {{ block.settings.subheading_size }}px;{%- endif %}
+                {%- if block.settings.subheading_letter_spacing != 0 %}letter-spacing: {{ block.settings.subheading_letter_spacing | divided_by: 100.0 }}em;{%- endif %}
+                font-weight: {{ block.settings.subheading_weight }};
+                text-transform: {{ block.settings.subheading_transform }};
+                {%- if block.settings.subheading_color != blank and block.settings.subheading_color.alpha != 0 %}color: {{ block.settings.subheading_color }};{%- endif %}
+              }
+            {%- endstyle -%}
             <span
               class="aura-arc-hero__subheading"
-              style="
-                {% if block.settings.subheading_size > 0 %}
-                  font-size: {{ block.settings.subheading_size }}px;
-                {% endif %}
-                {% if block.settings.subheading_color != blank and block.settings.subheading_color.alpha != 0 %}
-                  color: {{ block.settings.subheading_color }} !important;
-                {% endif %}
-              "
+              data-block-id="{{ block.id }}"
               {{ block.shopify_attributes }}
             >
               {{ block.settings.subheading | escape }}
@@ -80,16 +129,19 @@
 
         {%- when 'heading' -%}
           {%- if block.settings.heading != blank -%}
+            {%- style -%}
+              #shopify-section-{{ section.id }} [data-block-id="{{ block.id }}"].aura-arc-hero__heading {
+                {%- if block.settings.heading_custom_size > 0 %}font-size: clamp({{ block.settings.heading_custom_size | times: 0.55 }}px, 5vw, {{ block.settings.heading_custom_size }}px);{%- endif %}
+                {%- if block.settings.heading_max_width > 0 %}max-width: {{ block.settings.heading_max_width }}px;{%- endif %}
+                {%- if block.settings.heading_line_height != 0 %}line-height: {{ block.settings.heading_line_height | divided_by: 100.0 }};{%- endif %}
+                {%- if block.settings.heading_letter_spacing != 0 %}letter-spacing: {{ block.settings.heading_letter_spacing | divided_by: 100.0 }}em;{%- endif %}
+                {%- if block.settings.heading_font_weight != 'default' %}font-weight: {{ block.settings.heading_font_weight }};{%- endif %}
+                {%- if block.settings.heading_color != blank and block.settings.heading_color.alpha != 0 %}color: {{ block.settings.heading_color }};{%- endif %}
+              }
+            {%- endstyle -%}
             <h1
               class="aura-arc-hero__heading aura-arc-hero__heading--{{ block.settings.heading_size }}"
-              style="
-                {% if block.settings.heading_custom_size > 0 %}
-                  font-size: clamp({{ block.settings.heading_custom_size | times: 0.55 }}px, 5vw, {{ block.settings.heading_custom_size }}px) !important;
-                {% endif %}
-                {% if block.settings.heading_color != blank and block.settings.heading_color.alpha != 0 %}
-                  color: {{ block.settings.heading_color }} !important;
-                {% endif %}
-              "
+              data-block-id="{{ block.id }}"
               {{ block.shopify_attributes }}
             >
               {{ block.settings.heading }}
@@ -98,19 +150,20 @@
 
         {%- when 'text' -%}
           {%- if block.settings.text != blank -%}
+            {%- style -%}
+              #shopify-section-{{ section.id }} [data-block-id="{{ block.id }}"].aura-arc-hero__description {
+                {%- if block.settings.text_size > 0 %}font-size: {{ block.settings.text_size }}px;{%- endif %}
+                {%- if block.settings.text_max_width > 0 %}max-width: {{ block.settings.text_max_width }}px;{%- endif %}
+                {%- if block.settings.text_line_height != 0 %}line-height: {{ block.settings.text_line_height | divided_by: 100.0 }};{%- endif %}
+                {%- if block.settings.text_color != blank and block.settings.text_color.alpha != 0 %}color: {{ block.settings.text_color }};{%- endif %}
+              }
+              #shopify-section-{{ section.id }} [data-block-id="{{ block.id }}"].aura-arc-hero__description p {
+                {%- if block.settings.text_color != blank and block.settings.text_color.alpha != 0 %}color: {{ block.settings.text_color }};{%- endif %}
+              }
+            {%- endstyle -%}
             <div
               class="aura-arc-hero__description"
-              style="
-                {% if block.settings.text_size > 0 %}
-                  font-size: {{ block.settings.text_size }}px;
-                {% endif %}
-                {% if block.settings.text_max_width > 0 %}
-                  max-width: {{ block.settings.text_max_width }}px;
-                {% endif %}
-                {% if block.settings.text_color != blank and block.settings.text_color.alpha != 0 %}
-                  color: {{ block.settings.text_color }} !important;
-                {% endif %}
-              "
+              data-block-id="{{ block.id }}"
               {{ block.shopify_attributes }}
             >
               {{ block.settings.text }}
@@ -174,6 +227,10 @@
   },
   "settings": [
     {
+      "type": "header",
+      "content": "t:sections.aura_arc_hero.settings.header__background.content"
+    },
+    {
       "type": "image_picker",
       "id": "image",
       "label": "t:sections.aura_arc_hero.settings.image.label"
@@ -182,6 +239,19 @@
       "type": "image_picker",
       "id": "image_mobile",
       "label": "t:sections.aura_arc_hero.settings.image_mobile.label"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "options": [
+        { "value": "center", "label": "t:sections.aura_arc_hero.settings.image_position.options__1.label" },
+        { "value": "top", "label": "t:sections.aura_arc_hero.settings.image_position.options__2.label" },
+        { "value": "bottom", "label": "t:sections.aura_arc_hero.settings.image_position.options__3.label" },
+        { "value": "left", "label": "t:sections.aura_arc_hero.settings.image_position.options__4.label" },
+        { "value": "right", "label": "t:sections.aura_arc_hero.settings.image_position.options__5.label" }
+      ],
+      "default": "center",
+      "label": "t:sections.aura_arc_hero.settings.image_position.label"
     },
     {
       "type": "range",
@@ -197,29 +267,24 @@
       "type": "select",
       "id": "image_blend_mode",
       "options": [
-        {
-          "value": "luminosity",
-          "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__1.label"
-        },
-        {
-          "value": "normal",
-          "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__2.label"
-        },
-        {
-          "value": "multiply",
-          "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__3.label"
-        },
-        {
-          "value": "overlay",
-          "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__4.label"
-        },
-        {
-          "value": "darken",
-          "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__5.label"
-        }
+        { "value": "luminosity", "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__1.label" },
+        { "value": "normal",     "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__2.label" },
+        { "value": "multiply",   "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__3.label" },
+        { "value": "overlay",    "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__4.label" },
+        { "value": "darken",     "label": "t:sections.aura_arc_hero.settings.image_blend_mode.options__5.label" }
       ],
       "default": "luminosity",
       "label": "t:sections.aura_arc_hero.settings.image_blend_mode.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.aura_arc_hero.settings.header__overlay.content"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "t:sections.aura_arc_hero.settings.overlay_color.label",
+      "default": "#0e0e10"
     },
     {
       "type": "range",
@@ -230,6 +295,22 @@
       "unit": "%",
       "label": "t:sections.aura_arc_hero.settings.overlay_opacity.label",
       "default": 100
+    },
+    {
+      "type": "header",
+      "content": "t:sections.aura_arc_hero.settings.header__colors.content"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "t:sections.aura_arc_hero.settings.bg_color.label",
+      "default": "#0e0e10"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.aura_arc_hero.settings.text_color.label",
+      "default": "#fbfbf9"
     },
     {
       "type": "color",
@@ -244,45 +325,28 @@
       "default": "scheme-1"
     },
     {
+      "type": "header",
+      "content": "t:sections.aura_arc_hero.settings.header__layout.content"
+    },
+    {
       "type": "select",
       "id": "desktop_height",
       "options": [
-        {
-          "value": "500px",
-          "label": "t:sections.aura_arc_hero.settings.desktop_height.options__1.label"
-        },
-        {
-          "value": "650px",
-          "label": "t:sections.aura_arc_hero.settings.desktop_height.options__2.label"
-        },
-        {
-          "value": "85vh",
-          "label": "t:sections.aura_arc_hero.settings.desktop_height.options__3.label"
-        },
-        {
-          "value": "100vh",
-          "label": "t:sections.aura_arc_hero.settings.desktop_height.options__4.label"
-        }
+        { "value": "500px", "label": "t:sections.aura_arc_hero.settings.desktop_height.options__1.label" },
+        { "value": "650px", "label": "t:sections.aura_arc_hero.settings.desktop_height.options__2.label" },
+        { "value": "85vh",  "label": "t:sections.aura_arc_hero.settings.desktop_height.options__3.label" },
+        { "value": "100vh", "label": "t:sections.aura_arc_hero.settings.desktop_height.options__4.label" }
       ],
-      "default": "85vh",
+      "default": "100vh",
       "label": "t:sections.aura_arc_hero.settings.desktop_height.label"
     },
     {
       "type": "select",
       "id": "content_alignment",
       "options": [
-        {
-          "value": "left",
-          "label": "t:sections.aura_arc_hero.settings.content_alignment.options__1.label"
-        },
-        {
-          "value": "center",
-          "label": "t:sections.aura_arc_hero.settings.content_alignment.options__2.label"
-        },
-        {
-          "value": "right",
-          "label": "t:sections.aura_arc_hero.settings.content_alignment.options__3.label"
-        }
+        { "value": "left",   "label": "t:sections.aura_arc_hero.settings.content_alignment.options__1.label" },
+        { "value": "center", "label": "t:sections.aura_arc_hero.settings.content_alignment.options__2.label" },
+        { "value": "right",  "label": "t:sections.aura_arc_hero.settings.content_alignment.options__3.label" }
       ],
       "default": "center",
       "label": "t:sections.aura_arc_hero.settings.content_alignment.label"
@@ -296,6 +360,20 @@
       "unit": "px",
       "label": "t:sections.aura_arc_hero.settings.content_max_width.label",
       "default": 900
+    },
+    {
+      "type": "range",
+      "id": "content_gap",
+      "min": 8,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.aura_arc_hero.settings.content_gap.label",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "t:sections.aura_arc_hero.settings.header__spacing.content"
     },
     {
       "type": "range",
@@ -322,6 +400,104 @@
       "id": "overlap_header",
       "default": true,
       "label": "t:sections.aura_arc_hero.settings.overlap_header.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.aura_arc_hero.settings.header__lighting.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_lamp_effect",
+      "default": true,
+      "label": "t:sections.aura_arc_hero.settings.enable_lamp_effect.label"
+    },
+    {
+      "type": "range",
+      "id": "lamp_pos_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:sections.aura_arc_hero.settings.lamp_pos_x.label",
+      "default": 82
+    },
+    {
+      "type": "range",
+      "id": "lamp_pos_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:sections.aura_arc_hero.settings.lamp_pos_y.label",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "lamp_glow_radius",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "unit": "%",
+      "label": "t:sections.aura_arc_hero.settings.lamp_glow_radius.label",
+      "default": 34
+    },
+    {
+      "type": "color",
+      "id": "lamp_glow_color",
+      "label": "t:sections.aura_arc_hero.settings.lamp_glow_color.label",
+      "default": "#f2ca50"
+    },
+    {
+      "type": "color",
+      "id": "ambient_shadow_color",
+      "label": "t:sections.aura_arc_hero.settings.ambient_shadow_color.label",
+      "default": "#0b0b0e"
+    },
+    {
+      "type": "range",
+      "id": "ambient_shadow_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "t:sections.aura_arc_hero.settings.ambient_shadow_opacity.label",
+      "default": 85
+    },
+    {
+      "type": "header",
+      "content": "t:sections.aura_arc_hero.settings.header__cursor_light.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_cursor_light",
+      "default": true,
+      "label": "t:sections.aura_arc_hero.settings.enable_cursor_light.label"
+    },
+    {
+      "type": "range",
+      "id": "cursor_light_size",
+      "min": 200,
+      "max": 700,
+      "step": 25,
+      "unit": "px",
+      "label": "t:sections.aura_arc_hero.settings.cursor_light_size.label",
+      "default": 425
+    },
+    {
+      "type": "range",
+      "id": "cursor_light_intensity",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "t:sections.aura_arc_hero.settings.cursor_light_intensity.label",
+      "default": 65
+    },
+    {
+      "type": "color",
+      "id": "cursor_light_color",
+      "label": "t:sections.aura_arc_hero.settings.cursor_light_color.label",
+      "default": "#ffe8b3"
     }
   ],
   "blocks": [
@@ -347,6 +523,41 @@
           "default": 14
         },
         {
+          "type": "range",
+          "id": "subheading_letter_spacing",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "em",
+          "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_letter_spacing.label",
+          "default": 25
+        },
+        {
+          "type": "select",
+          "id": "subheading_weight",
+          "options": [
+            { "value": "300", "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_weight.options__1.label" },
+            { "value": "400", "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_weight.options__2.label" },
+            { "value": "500", "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_weight.options__3.label" },
+            { "value": "600", "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_weight.options__4.label" },
+            { "value": "700", "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_weight.options__5.label" }
+          ],
+          "default": "600",
+          "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_weight.label"
+        },
+        {
+          "type": "select",
+          "id": "subheading_transform",
+          "options": [
+            { "value": "none",       "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_transform.options__1.label" },
+            { "value": "uppercase",  "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_transform.options__2.label" },
+            { "value": "lowercase",  "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_transform.options__3.label" },
+            { "value": "capitalize", "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_transform.options__4.label" }
+          ],
+          "default": "uppercase",
+          "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_transform.label"
+        },
+        {
           "type": "color",
           "id": "subheading_color",
           "label": "t:sections.aura_arc_hero.blocks.subheading.settings.subheading_color.label"
@@ -368,22 +579,10 @@
           "type": "select",
           "id": "heading_size",
           "options": [
-            {
-              "value": "small",
-              "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_size.options__1.label"
-            },
-            {
-              "value": "medium",
-              "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_size.options__2.label"
-            },
-            {
-              "value": "large",
-              "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_size.options__3.label"
-            },
-            {
-              "value": "xl",
-              "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_size.options__4.label"
-            }
+            { "value": "small",  "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_size.options__1.label" },
+            { "value": "medium", "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_size.options__2.label" },
+            { "value": "large",  "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_size.options__3.label" },
+            { "value": "xl",     "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_size.options__4.label" }
           ],
           "default": "medium",
           "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_size.label"
@@ -397,6 +596,49 @@
           "unit": "px",
           "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_custom_size.label",
           "default": 0
+        },
+        {
+          "type": "range",
+          "id": "heading_max_width",
+          "min": 0,
+          "max": 1200,
+          "step": 20,
+          "unit": "px",
+          "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_max_width.label",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "heading_line_height",
+          "min": 0,
+          "max": 200,
+          "step": 5,
+          "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_line_height.label",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "heading_letter_spacing",
+          "min": -10,
+          "max": 30,
+          "step": 1,
+          "unit": "em",
+          "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_letter_spacing.label",
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "heading_font_weight",
+          "options": [
+            { "value": "default", "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_font_weight.options__1.label" },
+            { "value": "300",     "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_font_weight.options__2.label" },
+            { "value": "400",     "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_font_weight.options__3.label" },
+            { "value": "500",     "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_font_weight.options__4.label" },
+            { "value": "600",     "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_font_weight.options__5.label" },
+            { "value": "700",     "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_font_weight.options__6.label" }
+          ],
+          "default": "default",
+          "label": "t:sections.aura_arc_hero.blocks.heading.settings.heading_font_weight.label"
         },
         {
           "type": "color",
@@ -437,6 +679,15 @@
           "default": 670
         },
         {
+          "type": "range",
+          "id": "text_line_height",
+          "min": 0,
+          "max": 250,
+          "step": 5,
+          "label": "t:sections.aura_arc_hero.blocks.text.settings.text_line_height.label",
+          "default": 0
+        },
+        {
           "type": "color",
           "id": "text_color",
           "label": "t:sections.aura_arc_hero.blocks.text.settings.text_color.label"
@@ -452,22 +703,10 @@
           "type": "select",
           "id": "button_size",
           "options": [
-            {
-              "value": "small",
-              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_size.options__1.label"
-            },
-            {
-              "value": "medium",
-              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_size.options__2.label"
-            },
-            {
-              "value": "large",
-              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_size.options__3.label"
-            },
-            {
-              "value": "xl",
-              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_size.options__4.label"
-            }
+            { "value": "small",  "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_size.options__1.label" },
+            { "value": "medium", "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_size.options__2.label" },
+            { "value": "large",  "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_size.options__3.label" },
+            { "value": "xl",     "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_size.options__4.label" }
           ],
           "default": "medium",
           "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_size.label"
@@ -476,18 +715,9 @@
           "type": "select",
           "id": "button_shape",
           "options": [
-            {
-              "value": "pill",
-              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_shape.options__1.label"
-            },
-            {
-              "value": "rounded",
-              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_shape.options__2.label"
-            },
-            {
-              "value": "square",
-              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_shape.options__3.label"
-            }
+            { "value": "pill",    "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_shape.options__1.label" },
+            { "value": "rounded", "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_shape.options__2.label" },
+            { "value": "square",  "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_shape.options__3.label" }
           ],
           "default": "pill",
           "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_shape.label"
@@ -507,18 +737,9 @@
           "type": "select",
           "id": "button_style_1",
           "options": [
-            {
-              "value": "primary",
-              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__1.label"
-            },
-            {
-              "value": "secondary",
-              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__2.label"
-            },
-            {
-              "value": "outline",
-              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__3.label"
-            }
+            { "value": "primary",   "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__1.label" },
+            { "value": "secondary", "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__2.label" },
+            { "value": "outline",   "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__3.label" }
           ],
           "default": "primary",
           "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style_1.label"
@@ -548,18 +769,9 @@
           "type": "select",
           "id": "button_style_2",
           "options": [
-            {
-              "value": "primary",
-              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__1.label"
-            },
-            {
-              "value": "secondary",
-              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__2.label"
-            },
-            {
-              "value": "outline",
-              "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__3.label"
-            }
+            { "value": "primary",   "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__1.label" },
+            { "value": "secondary", "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__2.label" },
+            { "value": "outline",   "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style.options__3.label" }
           ],
           "default": "secondary",
           "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_style_2.label"
@@ -602,18 +814,10 @@
     {
       "name": "t:sections.aura_arc_hero.presets.name",
       "blocks": [
-        {
-          "type": "subheading"
-        },
-        {
-          "type": "heading"
-        },
-        {
-          "type": "text"
-        },
-        {
-          "type": "buttons"
-        }
+        { "type": "subheading" },
+        { "type": "heading" },
+        { "type": "text" },
+        { "type": "buttons" }
       ]
     }
   ]
