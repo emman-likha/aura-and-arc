@@ -32,6 +32,9 @@
     --header-nav-size:                {{ section.settings.nav_font_size }}px;
     --header-nav-weight:              {{ section.settings.nav_font_weight }};
     --header-nav-gap:                 {{ section.settings.nav_gap }}px;
+    --header-nav-justify:             {{ section.settings.nav_position | default: 'center' }};
+    --header-cart-icon-size:          {{ section.settings.cart_icon_size | default: 28 }}px;
+    --header-account-icon-size:       {{ section.settings.account_icon_size | default: 28 }}px;
     --header-title-size:              {{ section.settings.title_font_size }}px;
     --header-title-letter-spacing:    {{ section.settings.title_letter_spacing | divided_by: 100.0 }}em;
     --header-title-transform:         {{ section.settings.title_transform }};
@@ -116,8 +119,14 @@
 
     <!-- Header Action Icons -->
     <div class="aura-arc-header__actions">
-      <!-- Cart Link -->
-      <a href="{{ routes.cart_url }}" class="aura-arc-header__cart-link" aria-label="{{ 'templates.cart.cart' | t | default: 'Cart' }}">
+      <!-- Cart Link & Popup Trigger -->
+      <a
+        href="{{ routes.cart_url }}"
+        class="aura-arc-header__cart-link"
+        id="AuraCartTrigger"
+        aria-label="{{ 'templates.cart.cart' | t | default: 'Cart' }}"
+        {% if section.settings.cart_type == 'popup' %}aria-haspopup="dialog" aria-expanded="false"{% endif %}
+      >
         <svg class="aura-arc-header__cart-icon" viewBox="0 0 24 24">
           <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zm-9-1a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z"/>
         </svg>
@@ -130,8 +139,8 @@
       {%- if shop.customer_accounts_enabled -%}
         <a
           href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
-          class="aura-arc-header__account-link"
-          aria-label="{{ 'customer.account_fallback' | t | default: 'Account' }}"
+          class="aura-arc-header__account-link{% if section.settings.account_in_drawer %} aura-arc-header__account-link--desktop-only{% endif %}"
+          aria-label="{{ 'customer.account.title' | t }}"
         >
           <svg class="aura-arc-header__account-icon" viewBox="0 0 24 24">
             <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
@@ -147,15 +156,141 @@
       </button>
     </div>
   </div>
+
+  <!-- Cart Quick Preview Popup Modal -->
+  {%- if section.settings.cart_type == 'popup' -%}
+    {%- assign cart_block = section.blocks | where: 'type', 'cart_popup' | first -%}
+    {%- assign default_popup_title = 'sections.aura_arc_header.cart_popup.title' | t -%}
+    {%- assign default_popup_empty = 'sections.aura_arc_header.cart_popup.empty' | t -%}
+    {%- assign default_popup_btn = 'sections.aura_arc_header.cart_popup.view_cart' | t -%}
+    {%- assign popup_title = cart_block.settings.title | default: default_popup_title -%}
+    {%- assign popup_empty = cart_block.settings.empty_text | default: default_popup_empty -%}
+    {%- assign popup_btn_text = cart_block.settings.button_text | default: default_popup_btn -%}
+    {%- assign show_count = true -%}
+    {%- assign show_sub = true -%}
+    {%- if cart_block != blank -%}
+      {%- assign show_count = cart_block.settings.show_item_count -%}
+      {%- assign show_sub = cart_block.settings.show_subtotal -%}
+    {%- endif -%}
+
+    {%- style -%}
+      {%- if cart_block != blank -%}
+        {%- if cart_block.settings.match_header_bg -%}
+          #AuraCartPopup {
+            --cart-popup-width:          {{ cart_block.settings.card_width | default: 340 }}px;
+            --cart-popup-blur:           var(--header-blur-scrolled);
+            --cart-popup-bg:             var(--header-bg-color-scrolled);
+            --cart-popup-border:         var(--header-border-color);
+            --cart-popup-btn-color:      {{ cart_block.settings.button_text_color | default: 'var(--aura-arc-accent, #f2ca50)' }};
+          }
+        {%- else -%}
+          {%- assign popup_bg_dec = cart_block.settings.bg_opacity | default: 95 | divided_by: 100.0 -%}
+          {%- assign popup_bg_base = cart_block.settings.bg_color | default: '#101014' -%}
+          {%- assign popup_bg_rgba = popup_bg_base | color_modify: 'alpha', popup_bg_dec -%}
+          {%- assign popup_border_rgba = cart_block.settings.border_color | default: '#ffffff' | color_modify: 'alpha', 0.12 -%}
+          #AuraCartPopup {
+            --cart-popup-width:          {{ cart_block.settings.card_width | default: 340 }}px;
+            --cart-popup-blur:           {{ cart_block.settings.blur_intensity | default: 24 }}px;
+            --cart-popup-bg:             {{ popup_bg_rgba }};
+            --cart-popup-border:         {{ popup_border_rgba }};
+            --cart-popup-btn-color:      {{ cart_block.settings.button_text_color | default: 'var(--aura-arc-accent, #f2ca50)' }};
+          }
+        {%- endif -%}
+      {%- endif -%}
+    {%- endstyle -%}
+
+    <div
+      class="aura-arc-cart-popup"
+      id="AuraCartPopup"
+      role="dialog"
+      aria-modal="true"
+      aria-label="{{ popup_title | escape }}"
+      {% if cart_block != blank %}{{ cart_block.shopify_attributes }}{% endif %}
+    >
+      <div class="aura-arc-cart-popup__card">
+        <div class="aura-arc-cart-popup__header">
+          <div class="aura-arc-cart-popup__title-group">
+            <span class="aura-arc-cart-popup__title">
+              {{ popup_title | escape }}
+            </span>
+            {%- if show_count -%}
+              <span class="aura-arc-cart-popup__count">({{ cart.item_count }})</span>
+            {%- endif -%}
+          </div>
+
+          <button
+            type="button"
+            class="aura-arc-cart-popup__close"
+            id="AuraCartPopupClose"
+            aria-label="{{ 'sections.aura_arc_header.cart_popup.close' | t }}"
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="aura-arc-cart-popup__body">
+          {%- if cart.item_count == 0 -%}
+            <p class="aura-arc-cart-popup__empty">
+              {{ popup_empty | escape }}
+            </p>
+          {%- else -%}
+            {%- if show_sub -%}
+              <div class="aura-arc-cart-popup__summary">
+                <span class="aura-arc-cart-popup__subtotal-label">
+                  {{ 'sections.aura_arc_header.cart_popup.subtotal' | t }}
+                </span>
+                <span class="aura-arc-cart-popup__subtotal-amount">
+                  {{ cart.total_price | money }}
+                </span>
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+
+        <div class="aura-arc-cart-popup__footer">
+          <a href="{{ routes.cart_url }}" class="aura-arc-cart-popup__btn">
+            <span>{{ popup_btn_text | escape }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
 </header>
 
 <!-- Mobile Drawer Navigation -->
 <div class="aura-arc-header__drawer" id="AuraMobileDrawer">
-  <button type="button" class="aura-arc-header__drawer-close" id="AuraMobileDrawerClose" aria-label="Close Menu">
-    <svg style="width: 1.5rem; height: 1.5rem; fill: currentColor;" viewBox="0 0 24 24">
-      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-    </svg>
-  </button>
+  <div class="aura-arc-header__drawer-header">
+    {%- if shop.customer_accounts_enabled and section.settings.account_in_drawer -%}
+      <a
+        href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+        class="aura-arc-header__drawer-account"
+      >
+        <span class="aura-arc-header__drawer-account-avatar">
+          <svg class="aura-arc-header__drawer-account-icon" viewBox="0 0 24 24">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+        </span>
+        <span class="aura-arc-header__drawer-account-text">
+          {%- if customer -%}
+            {{ customer.first_name | default: 'customer.account.title' | t }}
+          {%- else -%}
+            {{ 'customer.account.title' | t }}
+          {%- endif -%}
+        </span>
+      </a>
+    {%- else -%}
+      <div></div>
+    {%- endif -%}
+
+    <button type="button" class="aura-arc-header__drawer-close" id="AuraMobileDrawerClose" aria-label="Close Menu">
+      <svg style="width: 1.5rem; height: 1.5rem; fill: currentColor;" viewBox="0 0 24 24">
+        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+      </svg>
+    </button>
+  </div>
+
   {%- if linklists[main_menu].links.size > 0 -%}
     <nav class="aura-arc-header__drawer-nav">
       {%- for link in linklists[main_menu].links -%}
@@ -194,6 +329,56 @@
       if (toggle) toggle.addEventListener('click', openDrawer);
       if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
       if (overlay) overlay.addEventListener('click', closeDrawer);
+
+      // Cart Popup Logic
+      const cartTrigger = document.getElementById('AuraCartTrigger');
+      const cartPopup = document.getElementById('AuraCartPopup');
+      const cartPopupClose = document.getElementById('AuraCartPopupClose');
+
+      function openCartPopup(e) {
+        if (cartPopup) {
+          if (e) e.preventDefault();
+          cartPopup.classList.add('aura-arc-cart-popup--open');
+          if (cartTrigger) cartTrigger.setAttribute('aria-expanded', 'true');
+        }
+      }
+
+      function closeCartPopup() {
+        if (cartPopup) {
+          cartPopup.classList.remove('aura-arc-cart-popup--open');
+          if (cartTrigger) cartTrigger.setAttribute('aria-expanded', 'false');
+        }
+      }
+
+      if (cartTrigger && cartPopup) {
+        cartTrigger.addEventListener('click', function(e) {
+          if (cartPopup.classList.contains('aura-arc-cart-popup--open')) {
+            closeCartPopup();
+          } else {
+            openCartPopup(e);
+          }
+        });
+      }
+
+      if (cartPopupClose) {
+        cartPopupClose.addEventListener('click', closeCartPopup);
+      }
+
+      // Close popup if clicked outside or pressed Escape
+      document.addEventListener('click', function(e) {
+        if (cartPopup && cartPopup.classList.contains('aura-arc-cart-popup--open')) {
+          if (!cartPopup.contains(e.target) && !cartTrigger.contains(e.target)) {
+            closeCartPopup();
+          }
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeCartPopup();
+          closeDrawer();
+        }
+      });
 
       // Scroll listener for dark background & blur effect
       if (header) {
@@ -542,6 +727,51 @@
       "default": 32
     },
     {
+      "type": "select",
+      "id": "nav_position",
+      "options": [
+        { "value": "center", "label": "t:sections.aura_arc_header.settings.nav_position.options__1.label" },
+        { "value": "flex-start", "label": "t:sections.aura_arc_header.settings.nav_position.options__2.label" },
+        { "value": "flex-end", "label": "t:sections.aura_arc_header.settings.nav_position.options__3.label" }
+      ],
+      "default": "center",
+      "label": "t:sections.aura_arc_header.settings.nav_position.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.aura_arc_header.settings.header__actions.content"
+    },
+    {
+      "type": "select",
+      "id": "cart_type",
+      "options": [
+        { "value": "popup", "label": "t:sections.aura_arc_header.settings.cart_type.options__1.label" },
+        { "value": "page",  "label": "t:sections.aura_arc_header.settings.cart_type.options__2.label" }
+      ],
+      "default": "popup",
+      "label": "t:sections.aura_arc_header.settings.cart_type.label"
+    },
+    {
+      "type": "range",
+      "id": "cart_icon_size",
+      "min": 18,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "t:sections.aura_arc_header.settings.cart_icon_size.label",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "account_icon_size",
+      "min": 18,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "t:sections.aura_arc_header.settings.account_icon_size.label",
+      "default": 28
+    },
+    {
       "type": "header",
       "content": "t:sections.aura_arc_header.settings.header__mobile.content"
     },
@@ -550,11 +780,122 @@
       "id": "drawer_bg_color",
       "label": "t:sections.aura_arc_header.settings.drawer_bg_color.label",
       "default": "#121215"
+    },
+    {
+      "type": "checkbox",
+      "id": "account_in_drawer",
+      "default": true,
+      "label": "t:sections.aura_arc_header.settings.account_in_drawer.label",
+      "info": "t:sections.aura_arc_header.settings.account_in_drawer.info"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "cart_popup",
+      "name": "t:sections.aura_arc_header.blocks.cart_popup.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Your Cart",
+          "label": "t:sections.aura_arc_header.blocks.cart_popup.settings.title.label"
+        },
+        {
+          "type": "text",
+          "id": "empty_text",
+          "default": "Your cart is currently empty.",
+          "label": "t:sections.aura_arc_header.blocks.cart_popup.settings.empty_text.label"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "default": "View Cart",
+          "label": "t:sections.aura_arc_header.blocks.cart_popup.settings.button_text.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_item_count",
+          "default": true,
+          "label": "t:sections.aura_arc_header.blocks.cart_popup.settings.show_item_count.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_subtotal",
+          "default": true,
+          "label": "t:sections.aura_arc_header.blocks.cart_popup.settings.show_subtotal.label"
+        },
+        {
+          "type": "range",
+          "id": "card_width",
+          "min": 240,
+          "max": 420,
+          "step": 10,
+          "unit": "px",
+          "label": "t:sections.aura_arc_header.blocks.cart_popup.settings.card_width.label",
+          "default": 340
+        },
+        {
+          "type": "range",
+          "id": "blur_intensity",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "t:sections.aura_arc_header.blocks.cart_popup.settings.blur_intensity.label",
+          "default": 24
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "default": "#101014",
+          "label": "t:sections.aura_arc_header.blocks.cart_popup.settings.bg_color.label"
+        },
+        {
+          "type": "range",
+          "id": "bg_opacity",
+          "min": 20,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "t:sections.aura_arc_header.blocks.cart_popup.settings.bg_opacity.label",
+          "default": 95
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "default": "#f2ca50",
+          "label": "t:sections.aura_arc_header.blocks.cart_popup.settings.accent_color.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "match_header_bg",
+          "default": true,
+          "label": "t:sections.aura_arc_header.blocks.cart_popup.settings.match_header_bg.label"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "default": "#f2ca50",
+          "label": "t:sections.aura_arc_header.blocks.cart_popup.settings.button_text_color.label"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "default": "#ffffff",
+          "label": "t:sections.aura_arc_header.blocks.cart_popup.settings.border_color.label"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "t:sections.header.name"
+      "name": "t:sections.header.name",
+      "blocks": [
+        {
+          "type": "cart_popup"
+        }
+      ]
     }
   ]
 }

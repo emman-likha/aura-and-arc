@@ -3432,6 +3432,7 @@
           "options__4": { "label": "Overlay" },
           "options__5": { "label": "Darken" }
         },
+        "image_blur": { "label": "Image blur intensity (px)" },
         "header__overlay": { "content": "Overlay" },
         "overlay_color": { "label": "Overlay gradient color" },
         "overlay_opacity": { "label": "Gradient overlay opacity" },
@@ -3455,6 +3456,9 @@
         },
         "content_max_width": { "label": "Content maximum width" },
         "content_gap": { "label": "Gap between blocks (px)" },
+        "content_backdrop_card": { "label": "Add subtle protective backdrop to text" },
+        "content_backdrop_blur": { "label": "Backdrop blur intensity (px)" },
+        "content_backdrop_opacity": { "label": "Backdrop tint darkness (%)" },
         "header__spacing": { "content": "Spacing" },
         "padding_top": { "label": "Top padding (px)" },
         "padding_bottom": { "label": "Bottom padding (px)" },
@@ -3566,7 +3570,9 @@
               "options__2": { "label": "Medium" },
               "options__3": { "label": "Large" },
               "options__4": { "label": "Extra large" }
-            }
+            },
+            "mobile_full_width": { "label": "Stretch buttons to full width on mobile" },
+            "mobile_center": { "label": "Center buttons on mobile" }
           }
         },
         "spacer": {
@@ -3653,8 +3659,46 @@
           "options__5": { "label": "Bold (700)" }
         },
         "nav_gap": { "label": "Gap between nav links (px)" },
+        "nav_position": {
+          "label": "Desktop navigation alignment",
+          "options__1": { "label": "Center" },
+          "options__2": { "label": "Left" },
+          "options__3": { "label": "Right" }
+        },
+        "header__actions": { "content": "Header icons & actions" },
+        "cart_type": {
+          "label": "Cart icon behavior",
+          "options__1": { "label": "Luxury Glassmorphic Popup" },
+          "options__2": { "label": "Direct Page Link" }
+        },
+        "cart_icon_size": { "label": "Cart icon size (px)" },
+        "account_icon_size": { "label": "Account icon size (px)" },
         "header__mobile": { "content": "Mobile drawer" },
-        "drawer_bg_color": { "label": "Mobile drawer background color" }
+        "drawer_bg_color": { "label": "Mobile drawer background color" },
+        "account_in_drawer": {
+          "label": "Place user account link inside burger menu drawer",
+          "info": "Moves the user account icon/button into the mobile slide-out drawer on phone screens"
+        }
+      },
+      "blocks": {
+        "cart_popup": {
+          "name": "Cart quick preview popup",
+          "settings": {
+            "title": { "label": "Popup heading" },
+            "empty_text": { "label": "Empty cart text" },
+            "button_text": { "label": "Button text" },
+            "show_item_count": { "label": "Show total item count" },
+            "show_subtotal": { "label": "Show live subtotal" },
+            "card_width": { "label": "Popup card width (px)" },
+            "blur_intensity": { "label": "Backdrop blur intensity (px)" },
+            "bg_color": { "label": "Popup background color" },
+            "bg_opacity": { "label": "Background opacity (%)" },
+            "accent_color": { "label": "Button & icon accent color" },
+            "button_text_color": { "label": "Button text color" },
+            "border_color": { "label": "Card border color" },
+            "match_header_bg": { "label": "Match header background & blur" }
+          }
+        }
       }
     }
   }

@@ -34,11 +34,15 @@
     --hero-img-opacity:             {{ section.settings.image_opacity | divided_by: 100.0 }};
     --hero-img-blend-mode:          {{ section.settings.image_blend_mode }};
     --hero-img-position:            {{ section.settings.image_position }};
+    --hero-img-blur:                {{ section.settings.image_blur | default: 0 }}px;
     --hero-overlay-opacity:         {{ section.settings.overlay_opacity | divided_by: 100.0 }};
     --hero-overlay-color:           {{ overlay_color }};
     --hero-overlay-color-mid:       {{ overlay_color | color_modify: 'alpha', 0.6 }};
     --hero-content-max-width:       {{ section.settings.content_max_width }}px;
     --hero-content-gap:             {{ content_gap }}px;
+    {%- assign card_bg_dec = section.settings.content_backdrop_opacity | default: 35 | divided_by: 100.0 -%}
+    --hero-card-bg:                 {{ bg_color | color_modify: 'alpha', card_bg_dec }};
+    --hero-card-blur:               {{ section.settings.content_backdrop_blur | default: 14 }}px;
     --hero-lamp-x:                  {{ section.settings.lamp_pos_x | default: 82 }}%;
     --hero-lamp-y:                  {{ section.settings.lamp_pos_y | default: 36 }}%;
     --hero-lamp-radius:             {{ section.settings.lamp_glow_radius | default: 34 }}%;
@@ -104,7 +108,7 @@
   {%- endif -%}
 
   <!-- Content Container -->
-  <div class="aura-arc-hero__content aura-arc-hero__content--align-{{ section.settings.content_alignment }}">
+  <div class="aura-arc-hero__content aura-arc-hero__content--align-{{ section.settings.content_alignment }}{% if section.settings.content_backdrop_card %} aura-arc-hero__content--card{% endif %}">
     {%- for block in section.blocks -%}
       {%- case block.type -%}
         {%- when 'subheading' -%}
@@ -172,7 +176,7 @@
 
         {%- when 'buttons' -%}
           <div
-            class="aura-arc-hero__actions aura-arc-hero__actions--{{ block.settings.button_size | default: 'medium' }}"
+            class="aura-arc-hero__actions aura-arc-hero__actions--{{ block.settings.button_size | default: 'medium' }}{% if block.settings.mobile_full_width %} aura-arc-hero__actions--mobile-full{% endif %}{% if block.settings.mobile_center %} aura-arc-hero__actions--mobile-center{% endif %}"
             style="
               --hero-btn-radius: {%- if block.settings.button_shape == 'square' -%}0px{%- elsif block.settings.button_shape == 'rounded' -%}8px{%- else -%}9999px{%- endif -%};
               {%- if block.settings.button_1_bg_color != blank and block.settings.button_1_bg_color.alpha != 0 -%}--hero-btn1-bg: {{ block.settings.button_1_bg_color }};{%- endif -%}
@@ -277,6 +281,16 @@
       "label": "t:sections.aura_arc_hero.settings.image_blend_mode.label"
     },
     {
+      "type": "range",
+      "id": "image_blur",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "t:sections.aura_arc_hero.settings.image_blur.label",
+      "default": 0
+    },
+    {
       "type": "header",
       "content": "t:sections.aura_arc_hero.settings.header__overlay.content"
     },
@@ -370,6 +384,32 @@
       "unit": "px",
       "label": "t:sections.aura_arc_hero.settings.content_gap.label",
       "default": 24
+    },
+    {
+      "type": "checkbox",
+      "id": "content_backdrop_card",
+      "default": true,
+      "label": "t:sections.aura_arc_hero.settings.content_backdrop_card.label"
+    },
+    {
+      "type": "range",
+      "id": "content_backdrop_blur",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "t:sections.aura_arc_hero.settings.content_backdrop_blur.label",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "content_backdrop_opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "t:sections.aura_arc_hero.settings.content_backdrop_opacity.label",
+      "default": 35
     },
     {
       "type": "header",
@@ -790,6 +830,18 @@
           "type": "color",
           "id": "button_2_border_color",
           "label": "t:sections.aura_arc_hero.blocks.buttons.settings.button_2_border_color.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_full_width",
+          "default": true,
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.mobile_full_width.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_center",
+          "default": true,
+          "label": "t:sections.aura_arc_hero.blocks.buttons.settings.mobile_center.label"
         }
       ]
     },

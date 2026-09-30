@@ -419,6 +419,9 @@
             "label": "Darken"
           }
         },
+        "image_blur": {
+          "label": "Image blur intensity (px)"
+        },
         "overlay_opacity": {
           "label": "Gradient overlay opacity"
         },
@@ -454,6 +457,15 @@
         },
         "content_max_width": {
           "label": "Content maximum width"
+        },
+        "content_backdrop_card": {
+          "label": "Add subtle protective backdrop to text"
+        },
+        "content_backdrop_blur": {
+          "label": "Backdrop blur intensity (px)"
+        },
+        "content_backdrop_opacity": {
+          "label": "Backdrop tint darkness (%)"
         },
         "padding_top": {
           "label": "Top padding (px)"
@@ -612,6 +624,12 @@
               "options__4": {
                 "label": "Extra large"
               }
+            },
+            "mobile_full_width": {
+              "label": "Stretch buttons to full width on mobile"
+            },
+            "mobile_center": {
+              "label": "Center buttons on mobile"
             }
           }
         },
@@ -629,6 +647,13 @@
       "name": "Aura & Arc Header",
       "presets": {
         "name": "Aura & Arc Header"
+      },
+      "cart_popup": {
+        "title": "Your Cart",
+        "empty": "Your cart is currently empty.",
+        "subtotal": "Subtotal",
+        "view_cart": "View Cart",
+        "close": "Close cart preview"
       },
       "settings": {
         "show_announcement": {
@@ -678,6 +703,45 @@
         },
         "header_height": {
           "label": "Header bar height (px)"
+        },
+        "nav_position": {
+          "label": "Desktop navigation alignment",
+          "options__1": { "label": "Center" },
+          "options__2": { "label": "Left" },
+          "options__3": { "label": "Right" }
+        },
+        "cart_type": {
+          "label": "Cart icon behavior",
+          "options__1": { "label": "Luxury Glassmorphic Popup" },
+          "options__2": { "label": "Direct Page Link" }
+        },
+        "cart_icon_size": {
+          "label": "Cart icon size (px)"
+        },
+        "account_icon_size": {
+          "label": "Account icon size (px)"
+        },
+        "account_in_drawer": {
+          "label": "Place user account link inside burger menu drawer"
+        }
+      },
+      "blocks": {
+        "cart_popup": {
+          "name": "Cart quick preview popup",
+          "settings": {
+            "title": { "label": "Popup heading" },
+            "empty_text": { "label": "Empty cart text" },
+            "button_text": { "label": "Button text" },
+            "show_item_count": { "label": "Show total item count" },
+            "show_subtotal": { "label": "Show live subtotal" },
+            "card_width": { "label": "Popup card width (px)" },
+            "blur_intensity": { "label": "Backdrop blur intensity (px)" },
+            "bg_color": { "label": "Popup background color" },
+            "bg_opacity": { "label": "Background opacity (%)" },
+            "accent_color": { "label": "Button & icon accent color" },
+            "button_text_color": { "label": "Button text color" },
+            "border_color": { "label": "Card border color" }
+          }
         }
       }
     }
@@ -831,6 +895,17 @@
       "max_characters": "{{ max_chars }} characters max",
       "send_on": "YYYY-MM-DD",
       "send_on_label": "Send on (optional)"
+    }
+  },
+  "sections": {
+    "aura_arc_header": {
+      "cart_popup": {
+        "title": "Your Cart",
+        "empty": "Your cart is currently empty",
+        "view_cart": "View Cart",
+        "subtotal": "Subtotal",
+        "close": "Close cart preview"
+      }
     }
   }
 }
