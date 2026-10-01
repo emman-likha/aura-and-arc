@@ -15,31 +15,55 @@
         "subheading": {
           "type": "subheading",
           "settings": {
-            "subheading": "Masterpieces of Light"
+            "subheading": "Masterpieces of Light",
+            "subheading_size": 14,
+            "subheading_letter_spacing": 25,
+            "subheading_weight": "600",
+            "subheading_transform": "uppercase",
+            "subheading_color": ""
           }
         },
         "heading": {
           "type": "heading",
           "settings": {
             "heading": "Exquisite Illumination for Refined Architectural Spaces",
-            "heading_size": "medium"
+            "heading_size": "medium",
+            "heading_custom_size": 0,
+            "heading_max_width": 0,
+            "heading_line_height": 0,
+            "heading_letter_spacing": 0,
+            "heading_font_weight": "default",
+            "heading_color": ""
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Bridging timeless artisan heritage with modern atmospheric engineering to curate unmatched residential and commercial environments.</p>"
+            "text": "<p>Bridging timeless artisan heritage with modern atmospheric engineering to curate unmatched residential and commercial environments.</p>",
+            "text_size": 18,
+            "text_max_width": 670,
+            "text_line_height": 0,
+            "text_color": ""
           }
         },
         "buttons": {
           "type": "buttons",
           "settings": {
+            "button_size": "large",
+            "button_shape": "rounded",
             "button_label_1": "Explore Illumination",
             "button_link_1": "shopify://collections/all",
             "button_style_1": "primary",
+            "button_1_bg_color": "",
+            "button_1_text_color": "",
             "button_label_2": "View Catalog",
             "button_link_2": "shopify://collections/all",
-            "button_style_2": "secondary"
+            "button_style_2": "secondary",
+            "button_2_bg_color": "",
+            "button_2_text_color": "",
+            "button_2_border_color": "",
+            "mobile_full_width": true,
+            "mobile_center": true
           }
         }
       },
@@ -50,37 +74,56 @@
         "buttons"
       ],
       "settings": {
+        "image": "shopify://shop_images/hero-section.jpg",
+        "image_position": "center",
         "image_opacity": 90,
         "image_blend_mode": "normal",
+        "image_blur": 0,
+        "overlay_color": "#0e0e10",
         "overlay_opacity": 30,
+        "bg_color": "#0e0e10",
+        "text_color": "#fbfbf9",
         "accent_color": "#f2ca50",
         "color_scheme": "scheme-4",
         "desktop_height": "100vh",
         "content_alignment": "left",
         "content_max_width": 900,
+        "content_gap": 24,
+        "content_backdrop_card": true,
+        "content_backdrop_blur": 6,
+        "content_backdrop_opacity": 15,
+        "padding_top": 96,
+        "padding_bottom": 96,
         "overlap_header": true,
         "enable_lamp_effect": true,
+        "lamp_pos_x": 82,
+        "lamp_pos_y": 36,
+        "lamp_glow_radius": 34,
+        "lamp_glow_color": "#f2ca50",
+        "ambient_shadow_color": "#0b0b0e",
+        "ambient_shadow_opacity": 85,
         "enable_cursor_light": true,
-        "ambient_shadow_opacity": 85
+        "cursor_light_size": 425,
+        "cursor_light_intensity": 65,
+        "cursor_light_color": "#ffe8b3"
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
+        "collection": "all",
+        "products_to_show": 8,
         "title": "Featured products",
         "heading_size": "h2",
         "description": "",
         "show_description": false,
         "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
         "columns_desktop": 4,
-        "color_scheme": "scheme-1",
+        "enable_desktop_slider": false,
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
+        "color_scheme": "scheme-1",
         "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
@@ -88,6 +131,7 @@
         "show_rating": false,
         "quick_add": "none",
         "columns_mobile": "2",
+        "swipe_on_mobile": false,
         "padding_top": 44,
         "padding_bottom": 36
       }

@@ -1,21 +1,102 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
     "header": {
       "type": "header",
+      "blocks": {
+        "cart_popup": {
+          "type": "cart_popup",
+          "settings": {
+            "title": "Your Cart",
+            "empty_text": "Your cart is currently empty.",
+            "button_text": "View Cart",
+            "button_style": "solid",
+            "show_item_count": true,
+            "show_subtotal": true,
+            "card_width": 380,
+            "card_padding": 24,
+            "blur_intensity": 24,
+            "bg_color": "#101014",
+            "bg_opacity": 70,
+            "accent_color": "#f2ca50",
+            "match_header_bg": true,
+            "button_bg_color": "#f2ca50",
+            "button_text_color": "#121212",
+            "border_color": "#ffffff",
+            "popup_alignment": "right",
+            "offset_x": 0,
+            "offset_y": 26,
+            "show_pointer_arrow": true,
+            "pointer_offset_x": 24
+          }
+        }
+      },
+      "block_order": [
+        "cart_popup"
+      ],
       "settings": {
         "show_announcement": true,
         "announcement_text": "Complimentary global shipping on orders over $500",
+        "announcement_link": "",
         "announcement_bg": "#161619",
         "announcement_color": "#f2ca50",
+        "announcement_font_size": 12,
         "position_mode": "sticky",
+        "header_height": 80,
+        "header_max_width": 1280,
+        "transparent_at_top": false,
+        "header_bg_color": "#0e0e10",
+        "header_bg_opacity": 80,
+        "header_blur_top": 0,
+        "header_bg_color_scrolled": "#0e0e10",
+        "header_bg_opacity_scrolled": 90,
+        "header_blur": 20,
+        "header_border_color": "#ffffff",
+        "header_text_color": "#fbfbf9",
+        "header_icon_color": "#fbfbf9",
+        "accent_color": "#f2ca50",
         "logo_width": 140,
         "brand_title": "Lumen & Co.",
         "show_title": true,
+        "title_font_size": 20,
+        "title_letter_spacing": 18,
+        "title_transform": "uppercase",
+        "title_font_weight": "500",
         "menu": "main-menu",
-        "accent_color": "#f2ca50",
-        "header_height": 80
+        "nav_text_color": "#fbfbf9",
+        "nav_text_color_hover": "#fbfbf9",
+        "nav_font_size": 14,
+        "nav_font_weight": "400",
+        "nav_gap": 32,
+        "nav_position": "center",
+        "cart_type": "popup",
+        "cart_icon_size": 28,
+        "account_icon_size": 28,
+        "cart_popup_title": "Your Cart",
+        "cart_popup_empty_text": "Your cart is currently empty.",
+        "cart_popup_btn_text": "View Cart",
+        "cart_popup_alignment": "right",
+        "cart_popup_offset_x": 0,
+        "cart_popup_offset_y": 14,
+        "cart_popup_width": 380,
+        "cart_popup_padding": 24,
+        "cart_popup_show_pointer": true,
+        "cart_popup_pointer_x": 24,
+        "cart_popup_button_style": "solid",
+        "cart_popup_button_bg": "#f2ca50",
+        "cart_popup_button_text_color": "#121212",
+        "drawer_bg_color": "#121215",
+        "account_in_drawer": true
       }
     }
   },

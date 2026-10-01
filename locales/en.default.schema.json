@@ -3673,6 +3673,33 @@
         },
         "cart_icon_size": { "label": "Cart icon size (px)" },
         "account_icon_size": { "label": "Account icon size (px)" },
+        "header__cart_popup": { "content": "Cart Quick Preview Popup" },
+        "cart_popup_width": { "label": "Popup width (px)" },
+        "cart_popup_padding": { "label": "Popup interior padding (px)" },
+        "cart_popup_alignment": {
+          "label": "Popup alignment",
+          "options": {
+            "right": "Right-aligned to cart icon",
+            "center": "Centered under cart icon"
+          }
+        },
+        "cart_popup_offset_x": { "label": "Horizontal offset / nudge (px)" },
+        "cart_popup_offset_y": { "label": "Vertical distance from header (px)" },
+        "cart_popup_show_pointer": { "label": "Show top pointer arrow" },
+        "cart_popup_pointer_x": { "label": "Pointer arrow horizontal position (px)" },
+        "cart_popup_button_style": {
+          "label": "Button style",
+          "options": {
+            "solid": "Solid accent button",
+            "outline": "Outline border button",
+            "link": "Underline link"
+          }
+        },
+        "cart_popup_button_bg": { "label": "Button background color" },
+        "cart_popup_button_text_color": { "label": "Button text color" },
+        "cart_popup_title": { "label": "Popup heading" },
+        "cart_popup_empty_text": { "label": "Empty cart text" },
+        "cart_popup_btn_text": { "label": "Button text" },
         "header__mobile": { "content": "Mobile drawer" },
         "drawer_bg_color": { "label": "Mobile drawer background color" },
         "account_in_drawer": {
@@ -3687,19 +3714,42 @@
             "title": { "label": "Popup heading" },
             "empty_text": { "label": "Empty cart text" },
             "button_text": { "label": "Button text" },
+            "button_style": {
+              "label": "Button style",
+              "options": {
+                "solid": "Solid accent button",
+                "outline": "Outline border button",
+                "link": "Underline link"
+              }
+            },
             "show_item_count": { "label": "Show total item count" },
             "show_subtotal": { "label": "Show live subtotal" },
             "card_width": { "label": "Popup card width (px)" },
+            "card_padding": { "label": "Popup card padding (px)" },
             "blur_intensity": { "label": "Backdrop blur intensity (px)" },
             "bg_color": { "label": "Popup background color" },
             "bg_opacity": { "label": "Background opacity (%)" },
             "accent_color": { "label": "Button & icon accent color" },
+            "button_bg_color": { "label": "Button background color" },
             "button_text_color": { "label": "Button text color" },
             "border_color": { "label": "Card border color" },
-            "match_header_bg": { "label": "Match header background & blur" }
+            "match_header_bg": { "label": "Match header background & blur" },
+            "header__position": { "content": "Position & Alignment" },
+            "popup_alignment": {
+              "label": "Popup alignment",
+              "options": {
+                "right": "Right-aligned to cart icon",
+                "center": "Centered under cart icon"
+              }
+            },
+            "offset_x": { "label": "Horizontal offset / nudge (px)" },
+            "offset_y": { "label": "Vertical distance from header (px)" },
+            "show_pointer_arrow": { "label": "Show top pointer arrow" },
+            "pointer_offset_x": { "label": "Pointer arrow horizontal position (px)" }
           }
         }
       }
     }
   }
 }
+
